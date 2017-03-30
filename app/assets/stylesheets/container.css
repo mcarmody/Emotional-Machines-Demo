@@ -13,6 +13,9 @@
  *= require_tree .
  *= require_self
  */
+body {
+  margin: 0; }
+
 .titleBar {
   position: absolute;
   top: 0;
@@ -31,6 +34,9 @@
   position: relative;
   height: 100%;
   width: 100%;
-  padding-left: 200px; }
+  margin-left: 200px;
+  margin-top: 60px;
+  background-color: red;
+  z-index: -1; }
 
 /*# sourceMappingURL=container.css.map */
