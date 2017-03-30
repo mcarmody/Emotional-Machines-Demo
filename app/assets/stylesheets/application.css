@@ -14,7 +14,7 @@
  *= require_self
  */
 .titleBar {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 200px;
   height: 60px;
@@ -25,6 +25,6 @@
     font-size: 24pt;
     color: #444;
     font-family: Tahoma;
-    padding: 5px; }
+    padding: 10px; }
 
 /*# sourceMappingURL=application.css.map */

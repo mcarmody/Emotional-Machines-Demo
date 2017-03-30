@@ -13,23 +13,18 @@
  *= require_tree .
  *= require_self
  */
-
- $primary-font-color: #ddd;
-
-
 .titleBar {
-	position: absolute;
-	top: 0;
-	left: 200px;
-	height: 60px;
-	width: 100%;
-	background-color: #ddd;
-	box-shadow: 0px 2px 1px #aaa;
+  position: absolute;
+  top: 0;
+  left: 200px;
+  height: 60px;
+  width: 100%;
+  background-color: #ddd;
+  box-shadow: 0px 2px 1px #aaa; }
+  .titleBar .pageTitle {
+    font-size: 24pt;
+    color: #444;
+    font-family: Tahoma;
+    padding: 10px; }
 
-	.pageTitle {
-			font-size: 24pt;
-			color: #444;
-			font-family: Tahoma;
-			padding: 10px;
-	}
-}
+/*# sourceMappingURL=machines.css.map */
