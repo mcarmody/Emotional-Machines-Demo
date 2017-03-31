@@ -41,6 +41,8 @@
 
 		.navItem {
 			padding: 10px 40px;
+			cursor: pointer;
+
 
 			&:hover {
 				background-color: #666;
@@ -48,6 +50,10 @@
 
 			.navLink {
 				text-decoration: none;
+
+				i {
+					padding-right: 5px;
+				}
 			}
 		}
 	}
@@ -59,6 +65,7 @@
 
 		.settingsItem {
 			padding: 10px 40px;
+			cursor: pointer;
 
 			&:hover {
 				background-color: #666;

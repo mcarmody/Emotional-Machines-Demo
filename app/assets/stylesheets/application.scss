@@ -15,9 +15,12 @@
  */
 
  $primary-font-color: #ddd;
+ $link-color: darken(blue, 10%);
+ $border-color: #222;
 
 body {
 	margin: 0;
+	font-family: Tahoma;
 }
 
 .titleBar {
@@ -32,7 +35,14 @@ body {
 	.pageTitle {
 			font-size: 24pt;
 			color: #444;
-			font-family: Tahoma;
 			padding: 10px;
 	}
+}
+
+.alert-notice {
+	color: darken(red, 10%);
+}
+
+.hidden {
+	display: none;
 }

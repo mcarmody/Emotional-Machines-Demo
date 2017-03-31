@@ -14,3 +14,17 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+$(document).ready(function() {
+
+	$('.elementHeader').click(function() {
+		$(this).toggleClass('highlighted');
+		$(this).find('i').toggleClass('fa-caret-right').toggleClass('fa-caret-down');
+		$(this).siblings('.detailTable').toggleClass('hidden');
+	});
+
+	// $('.highlighted').click(function() {
+	// 	$(this).removeClass('highlighted');
+	// })
+
+});

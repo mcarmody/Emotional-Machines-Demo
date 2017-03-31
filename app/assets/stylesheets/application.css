@@ -14,7 +14,8 @@
  *= require_self
  */
 body {
-  margin: 0; }
+  margin: 0;
+  font-family: Tahoma; }
 
 .titleBar {
   position: absolute;
@@ -27,7 +28,12 @@ body {
   .titleBar .pageTitle {
     font-size: 24pt;
     color: #444;
-    font-family: Tahoma;
     padding: 10px; }
+
+.alert-notice {
+  color: #cc0000; }
+
+.hidden {
+  display: none; }
 
 /*# sourceMappingURL=application.css.map */
