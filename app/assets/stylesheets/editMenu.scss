@@ -1,0 +1,10 @@
+.editMenu {
+	position: fixed;
+	display: none;
+	right: 0px;
+	top: 0px;
+	width: 300px;
+	height: 100%;
+	background: lighten(black, 70%);
+	border-left: 1px solid black;
+}

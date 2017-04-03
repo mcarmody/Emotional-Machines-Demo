@@ -1,7 +1,7 @@
 @import 'application.scss';
 
 .columnHeaders {
-	display: inline-block;
+	display: block;
 
 	div {
 		display: inline-block;
@@ -11,7 +11,7 @@
 }
 
 .elementRow{
-	display: inline-block;
+	display: block;
 
 	div {
 		display: inline-block;
@@ -23,14 +23,51 @@
 #alertButton {
 	color: white;
 	background-color: black;
-	padding: 4px;
+	padding: 6px;
 	border: 1px solid teal;
 	border-radius: 5px;
 	cursor: pointer;
 	font-size: 16pt;
-	width: 70px;
+	width: 75px;
 
 	&:active {
 		background-color: lighten(black, 30%);
 	};
+}
+
+#editButton {
+	@extend #alertButton;
+	width: 40px;
+}
+
+.elementGroup {
+
+	padding: 20px 15px 0px 15px;
+	font-size: 16pt;
+	color: $primary-font-color;
+
+	.elementHeader {
+		width: 750px;
+		background-color: teal;
+		height: 25px;
+		padding: 5px;
+		border: 1px solid $border-color;
+		user-select: none;
+		cursor: pointer;
+
+		.fa-caret-right {
+			padding-left: 5px;
+		}
+	}
+
+	.detailTable {
+		padding: 5px 5px 0px 15px;
+
+		.elementRow {
+		}
+	}
+
+	.highlighted {
+		background-color: lighten(teal, 10%);
+	}
 }
