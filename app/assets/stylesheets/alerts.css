@@ -36,11 +36,19 @@ body {
 .hidden {
   display: none; }
 
+.columnHeaders {
+  display: inline-block; }
+  .columnHeaders div {
+    display: inline-block;
+    width: 150px;
+    color: black; }
+
 .elementRow {
   display: inline-block; }
   .elementRow div {
     display: inline-block;
-    width: 110px; }
+    width: 150px;
+    font-size: 12pt; }
 
 .alertButton {
   color: white;

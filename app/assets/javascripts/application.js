@@ -78,6 +78,9 @@ $(document).ready(function() {
 
 		});
 
+
+		// make the date human-readable
+
 		var hours;
 
 		if (today.getHours > 12) {
@@ -103,6 +106,8 @@ $(document).ready(function() {
 
 		readableDate = today.getMonth() + "/" + today.getDay() + "/" + (today.getYear()-100) + ", " + today.getHours() + ":" + minutes;
 
+
+		//update the page text
 		$(this).siblings(".lastUpdate").html(readableDate);
 	
 	});
