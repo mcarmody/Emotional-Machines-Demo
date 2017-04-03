@@ -84,4 +84,11 @@ body {
   .elementGroup .highlighted {
     background-color: #00b3b3; }
 
+.editMenu {
+  padding: 15px; }
+
+.editHeader {
+  font-size: 24pt;
+  font-weight: 700; }
+
 /*# sourceMappingURL=alerts.css.map */
