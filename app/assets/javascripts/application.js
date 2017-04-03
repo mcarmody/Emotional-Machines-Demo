@@ -24,17 +24,25 @@ $(document).ready(function() {
 	});
 
 	var lastFiveHours = [];
+	var today = new Date;
+	var isAM = true;
+	var readableDate;
 
 	var highAlert = -79.5;
 	var lowAlert = -80.5;
+	var maxTemp = 0;
+	var temp = 0;
+	var timeStamp;
+	var date;
+	var highAlertCounter = 0;
+	var lowAlertCounter = 0;
 
 	$('.alertButton').click(function() {
 
+
 		var currentTime = Math.round((new Date).getTime() / 1000);
-		var fiveHoursAgo = currentTime-(5*60*60);
-		console.log(currentTime);
-		console.log(fiveHoursAgo);
 		var limit = 1200 //1200 is every data point within the past 5 hours
+		var fiveHoursAgo = currentTime-(limit / 240 * 60 * 60);
 
 		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
 			
@@ -42,12 +50,6 @@ $(document).ready(function() {
 			console.log("Current temperature is " + data[data.length-1].tempextcal + ", logged at: " + data[data.length-1].sample_date);
 
 			var i;
-			var maxTemp = 0;
-			var temp = 0;
-			var timeStamp;
-			var date;
-			var highAlertCounter = 0;
-			var lowAlertCounter = 0;
 
 			for (i = 0; i < data.length; i++) {
 				temp = data[i].tempextcal;
@@ -72,12 +74,38 @@ $(document).ready(function() {
 			};
 
 			console.log("done, data length: " + data.length);
-			console.log("High Temp Alerts: " + highAlertCounter);
-			console.log("Low Temp Alerts: " + lowAlertCounter);
+			console.log("There have been " + highAlertCounter + " high-temp alerts and " + lowAlertCounter + " low alerts in the past " + limit / 240 + " hours.");
 
-			alert("There have been " + highAlertCounter + " high-temp alerts and " + lowAlertCounter + " low alerts in the past " + limit / 240 + " hours.");
 		});
-	})
+
+		var hours;
+
+		if (today.getHours > 12) {
+			hours = today.getHours()-12;
+			isAM = false;
+		} else {
+			hours = today.getHours();
+		};
+		
+		var minutes;
+
+		if (today.getMinutes() < 10) {
+			minutes = "0" + today.getMinutes()
+		} else {
+			minutes = today.getMinutes();
+		};
+
+		if (isAM) {
+			minutes = minutes + " AM"
+		} else {
+			minutes = minutes + " PM"
+		};
+
+		readableDate = today.getMonth() + "/" + today.getDay() + "/" + (today.getYear()-100) + ", " + today.getHours() + ":" + minutes;
+
+		$(this).siblings(".lastUpdate").html(readableDate);
+	
+	});
 
 	
 
