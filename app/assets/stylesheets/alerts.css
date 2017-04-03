@@ -81,7 +81,7 @@ body {
 .elementGroup {
   padding: 20px 15px 0px 15px;
   font-size: 16pt;
-  color: #6f6f6f; }
+  color: white; }
   .elementGroup .elementHeader {
     width: 750px;
     background-color: teal;
@@ -93,8 +93,25 @@ body {
     .elementGroup .elementHeader .fa-caret-right {
       padding-left: 5px; }
   .elementGroup .detailTable {
-    padding: 5px 5px 0px 15px; }
+    padding: 5px 5px 0px 15px;
+    color: #6f6f6f; }
   .elementGroup .highlighted {
     background-color: #00b3b3; }
+
+.hideButton {
+  position: absolute;
+  padding-left: 7px;
+  padding-right: 0px;
+  left: -20px;
+  top: 5px;
+  width: 11px;
+  height: 20px;
+  background-color: #00b3b3;
+  border-bottom: 1px solid #222;
+  border-left: 1px solid #222;
+  border-top: 1px solid #222;
+  cursor: pointer; }
+  .hideButton:hover {
+    background-color: #00e6e6; }
 
 /*# sourceMappingURL=alerts.css.map */

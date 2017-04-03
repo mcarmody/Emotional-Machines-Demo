@@ -17,7 +17,9 @@
  $primary-font-color: #bbb;
  $link-color: darken(blue, 10%);
  $border-color: #222;
- $primary-header-color: darken($primary-font-color, 30%);
+ $primary-header-color: lighten($primary-font-color, 30%);
+ $primary-subheader-color: darken($primary-font-color, 30%);
+ $primary-logo-color: lighten(teal, 10%);
 
 body {
 	margin: 0;

@@ -62,6 +62,7 @@
 
 	.detailTable {
 		padding: 5px 5px 0px 15px;
+		color: $primary-subheader-color;
 
 		.elementRow {
 		}
@@ -69,5 +70,24 @@
 
 	.highlighted {
 		background-color: lighten(teal, 10%);
+	}
+}
+
+.hideButton {
+	position: absolute;
+	padding-left: 7px;
+	padding-right: 0px;
+	left: -20px;
+	top: 5px;
+	width: 11px;
+	height: 20px;
+	background-color: $primary-logo-color;
+	border-bottom: 1px solid $border-color;
+	border-left: 1px solid $border-color;
+	border-top: 1px solid $border-color;
+	cursor: pointer;
+
+	&:hover {
+		background-color: lighten($primary-logo-color, 10%);
 	}
 }

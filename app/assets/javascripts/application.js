@@ -59,17 +59,19 @@ $(document).ready(function() {
 		lowAlert = newLowTempThreshold;
 
 		// this is kicking back a 404
-		$.ajax({
-			type: 'POST',
-			url: 'https://api.elementalmachines.io:443/api/alert_settings.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&machine_uuid=8092d98c-b92f-4343-a8ae-104f90362de8',
-			dataType: 'application/json; charset=utf-8',
-			data: 'test'
-		});
+		// $.ajax({
+		// 	type: 'POST',
+		// 	url: 'https://api.elementalmachines.io:443/api/alert_settings.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&machine_uuid=8092d98c-b92f-4343-a8ae-104f90362de8',
+		// 	dataType: 'application/json; charset=utf-8',
+		// 	data: 'test'
+		// });
 
 		// this is just to prove that the alerts API request url works	
 		$.getJSON('https://api.elementalmachines.io:443/api/alert_settings.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&machine_uuid=8092d98c-b92f-4343-a8ae-104f90362de8', function(data) {
 			console.log(data);
 		})
+
+		updateTable();
 
 	});
 
@@ -89,7 +91,130 @@ $(document).ready(function() {
 
 
 	// update the alert count, and check latest data readings
-	$('.alertButton').click(function() {
+	$('.alertButton').click(updateTable);
+
+
+	//this is for opening the 'Alert Details' panel
+	$('.elementRow').find('.highAlerts').click( function() {
+		alertsModal.fadeIn();
+		$('.modalOverlay').fadeIn();
+		alertsModal.find('.alertsDetail').html('');
+
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+			alertsModal.find('.alertsSubheader').html(data.name);
+		});
+
+		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
+			
+				//check to make sure we can receive and parse the API data at all
+				temp = data[data.length-1].tempextcal;
+				$('.currentTemp').html('Current Temperature: ' + temp + '°C');
+				console.log('working');
+
+				var i;
+				var loopDate;
+
+				for (i = 0; i < data.length; i++) {
+					loopTemp = data[i].tempextcal;
+					loopDate = new Date(data[i].sample_epoch*1000);
+
+					if (loopDate.getHours > 12) {
+						hours = loopDate.getHours()-12;
+						isAM = false;
+					} else {
+						hours = loopDate.getHours();
+					};
+					
+					var minutes;
+
+					if (loopDate.getMinutes() < 10) {
+						minutes = "0" + loopDate.getMinutes()
+					} else {
+						minutes = loopDate.getMinutes();
+					};
+
+					if (isAM) {
+						minutes = minutes + " AM"
+					} else {
+						minutes = minutes + " PM"
+					};
+
+					readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + loopDate.getHours() + ":" + minutes;
+
+
+					// high temp alert check
+					if (Math.abs(loopTemp) < Math.abs(highAlert)) {
+						alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + ': </div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
+						//console.log(temp);
+					};
+				};
+			})
+	})
+
+	//this is for opening the 'Alert Details' panel
+	$('.elementRow').find('.lowAlerts').click( function() {
+		alertsModal.fadeIn();
+		$('.modalOverlay').fadeIn();
+		alertsModal.find('.alertsDetail').html('');
+
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+			alertsModal.find('.alertsSubheader').html(data.name);
+		});
+
+		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
+			
+				//check to make sure we can receive and parse the API data at all
+				temp = data[data.length-1].tempextcal;
+				$('.currentTemp').html('Current Temperature: ' + temp + '°C');
+				console.log('working');
+
+				var i;
+
+				for (i = 0; i < data.length; i++) {
+					loopTemp = data[i].tempextcal;
+					var loopDate = new Date(data[i].sample_epoch*1000);
+
+					if (loopDate.getHours > 12) {
+						hours = loopDate.getHours()-12;
+						isAM = false;
+					} else {
+						hours = loopDate.getHours();
+					};
+					
+					var minutes;
+
+					if (loopDate.getMinutes() < 10) {
+						minutes = "0" + loopDate.getMinutes()
+					} else {
+						minutes = loopDate.getMinutes();
+					};
+
+					if (isAM) {
+						minutes = minutes + " AM"
+					} else {
+						minutes = minutes + " PM"
+					};
+
+					readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + loopDate.getHours() + ":" + minutes;
+
+
+					// low temp alert check
+					if (Math.abs(loopTemp) > Math.abs(lowAlert)) {
+						alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + ': </div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
+						//console.log(temp);
+					};
+				};
+			})
+
+
+	})
+
+	$('.closeModal').click( function() {
+		alertsModal.fadeOut();
+		$('.modalOverlay').fadeOut();
+	})
+
+	function updateTable() {
 		var highAlertCounter = 0;
 		var lowAlertCounter = 0;
 
@@ -177,127 +302,6 @@ $(document).ready(function() {
 		//update the page text
 		$(this).siblings(".lastUpdate").html(readableDate);
 	
-	});
-
-
-	//this is for opening the 'Alert Details' panel
-	$('.elementRow').find('.highAlerts').click( function() {
-		alertsModal.fadeIn();
-		$('.modalOverlay').fadeIn();
-		alertsModal.find('.alertsDetail').html('');
-
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-			alertsModal.find('.alertsSubheader').html(data.name);
-		});
-
-		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
-			
-				//check to make sure we can receive and parse the API data at all
-				temp = data[data.length-1].tempextcal;
-				$('.currentTemp').html('Current Temperature: ' + temp + '°C');
-				console.log('working');
-
-				var i;
-				var loopDate;
-
-				for (i = 0; i < data.length; i++) {
-					loopTemp = data[i].tempextcal;
-					loopDate = new Date(data[i].sample_epoch*1000);
-
-					if (loopDate.getHours > 12) {
-						hours = loopDate.getHours()-12;
-						isAM = false;
-					} else {
-						hours = loopDate.getHours();
-					};
-					
-					var minutes;
-
-					if (loopDate.getMinutes() < 10) {
-						minutes = "0" + loopDate.getMinutes()
-					} else {
-						minutes = loopDate.getMinutes();
-					};
-
-					if (isAM) {
-						minutes = minutes + " AM"
-					} else {
-						minutes = minutes + " PM"
-					};
-
-					readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + loopDate.getHours() + ":" + minutes;
-
-
-					// high temp alert check
-					if (Math.abs(loopTemp) < Math.abs(highAlert)) {
-						alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + ': </div><div class="singleAlertTemp">' + loopTemp + '°C </div>');
-						//console.log(temp);
-					};
-				};
-			})
-	})
-
-	//this is for opening the 'Alert Details' panel
-	$('.elementRow').find('.lowAlerts').click( function() {
-		alertsModal.fadeIn();
-		$('.modalOverlay').fadeIn();
-		alertsModal.find('.alertsDetail').html('');
-
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-			alertsModal.find('.alertsSubheader').html(data.name);
-		});
-
-		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
-			
-				//check to make sure we can receive and parse the API data at all
-				temp = data[data.length-1].tempextcal;
-				$('.currentTemp').html('Current Temperature: ' + temp + '°C');
-				console.log('working');
-
-				var i;
-
-				for (i = 0; i < data.length; i++) {
-					loopTemp = data[i].tempextcal;
-					var loopDate = new Date(data[i].sample_epoch*1000);
-
-					if (loopDate.getHours > 12) {
-						hours = loopDate.getHours()-12;
-						isAM = false;
-					} else {
-						hours = loopDate.getHours();
-					};
-					
-					var minutes;
-
-					if (loopDate.getMinutes() < 10) {
-						minutes = "0" + loopDate.getMinutes()
-					} else {
-						minutes = loopDate.getMinutes();
-					};
-
-					if (isAM) {
-						minutes = minutes + " AM"
-					} else {
-						minutes = minutes + " PM"
-					};
-
-					readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + loopDate.getHours() + ":" + minutes;
-
-
-					// low temp alert check
-					if (Math.abs(loopTemp) > Math.abs(lowAlert)) {
-						alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + ': </div><div class="singleAlertTemp">' + loopTemp + '°C </div>');
-						//console.log(temp);
-					};
-				};
-			})
-
-
-	})
-
-	$('.closeModal').click( function() {
-		alertsModal.fadeOut();
-		$('.modalOverlay').fadeOut();
-	})
+	};
 });
 
