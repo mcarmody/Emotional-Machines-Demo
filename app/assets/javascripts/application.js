@@ -37,8 +37,20 @@ $(document).ready(function() {
 	var highAlertCounter = 0;
 	var lowAlertCounter = 0;
 
-	$('.alertButton').click(function() {
+	//update the high and/or low alert values
+	$('.updateTempButton').click(function() {
+		var newHighTempThreshold = $(this).siblings('.highTempInput').val();
+		var newLowTempThreshold = $(this).siblings('.lowTempInput').val();
 
+		console.log(newHighTempThreshold);
+
+		highAlert = newHighTempThreshold;
+		lowAlert = newLowTempThreshold;
+	})
+
+
+	// update the alert count, and check latest data readings
+	$('.alertButton').click(function() {
 
 		var currentTime = Math.round((today).getTime() / 1000);
 		var limit = 1200 //1200 is every data point within the past 5 hours
@@ -123,7 +135,7 @@ $(document).ready(function() {
 			minutes = minutes + " PM"
 		};
 
-		readableDate = today.getMonth() + "/" + today.getDay() + "/" + (today.getYear()-100) + ", " + today.getHours() + ":" + minutes;
+		readableDate = today.getMonth()+1 + "/" + today.getDate() + "/" + (today.getYear()-100) + ", " + today.getHours() + ":" + minutes;
 
 
 		//update the page text
