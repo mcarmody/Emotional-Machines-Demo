@@ -1,0 +1,22 @@
+@import 'application.scss';
+
+.elementRow{
+	display: inline-block;
+
+	div {
+		display: inline-block;
+	}
+}
+
+.alertButton {
+	color: white;
+	background-color: black;
+	padding: 4px;
+	border: 1px solid teal;
+	border-radius: 5px;
+	cursor: pointer;
+
+	&:active {
+		background-color: lighten(black, 30%);
+	};
+}
