@@ -14,9 +14,10 @@
  *= require_self
  */
 
- $primary-font-color: #ddd;
+ $primary-font-color: #bbb;
  $link-color: darken(blue, 10%);
  $border-color: #222;
+ $primary-header-color: darken($primary-font-color, 30%);
 
 body {
 	margin: 0;

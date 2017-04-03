@@ -44,7 +44,7 @@
 
 	padding: 20px 15px 0px 15px;
 	font-size: 16pt;
-	color: $primary-font-color;
+	color: $primary-header-color;
 
 	.elementHeader {
 		width: 750px;
@@ -84,6 +84,10 @@
 		p {
 			margin-top: 5px;
 			margin-bottom: 5px;
+		}
+
+		input {
+			color: $primary-font-color;
 		}
 	}
 

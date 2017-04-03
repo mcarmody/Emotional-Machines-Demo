@@ -15,7 +15,9 @@
 //= require turbolinks
 //= require_tree .
 
+
 $(document).ready(function() {
+
 
 	$('.elementHeader').click(function() {
 		$(this).toggleClass('highlighted');
@@ -37,16 +39,45 @@ $(document).ready(function() {
 	var highAlertCounter = 0;
 	var lowAlertCounter = 0;
 
-	//update the high and/or low alert values
+	// the high and/or low alert values
 	$('.updateTempButton').click(function() {
 		var newHighTempThreshold = $(this).siblings('.highTempInput').val();
 		var newLowTempThreshold = $(this).siblings('.lowTempInput').val();
 
-		console.log(newHighTempThreshold);
+		console.log(newHighTempThreshold + " " + newLowTempThreshold);
 
 		highAlert = newHighTempThreshold;
 		lowAlert = newLowTempThreshold;
-	})
+
+		// this is kicking back a 404
+		// $.ajax({
+		// 	type: 'POST',
+		// 	url: 'https://api.elementalmachines.io:443/api/alert_settings.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&machine_uuid=8092d98c-b92f-4343-a8ae-104f90362de8',
+		// 	dataType: 'application/json; charset=utf-8',
+		// 	data: 'test'
+		// });
+
+		// this is just to prove that the alerts API request url works	
+		// $.getJSON('https://api.elementalmachines.io:443/api/alert_settings.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&machine_uuid=8092d98c-b92f-4343-a8ae-104f90362de8', function(data) {
+		// 	console.log(data);
+		// })
+
+	});
+
+
+	//animate the edit menu and update the values there
+	$('.editButton').click(function() {
+		var editMenu = $('.editMenu');
+		editMenu.animate({width:'toggle'},300);
+
+		$('.highTempInput').attr('value', highAlert);
+		$('.lowTempInput').attr('value', lowAlert);
+
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+			editMenu.find('.editHeader').html(data.name + " Alerts");
+		});
+		
+	});
 
 
 	// update the alert count, and check latest data readings

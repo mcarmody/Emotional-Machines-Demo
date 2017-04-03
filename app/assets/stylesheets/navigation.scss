@@ -60,8 +60,10 @@
 
 	.settingsMenu {
 		@extend .navMenu;
-		position: relative;
-		top:  100px;
+		position: fixed;
+		width: 200px;
+		bottom:  0px;
+		margin-bottom: 20px;
 
 		.settingsItem {
 			padding: 10px 40px;

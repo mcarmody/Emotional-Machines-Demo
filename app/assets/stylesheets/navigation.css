@@ -50,7 +50,7 @@ body {
     height: 150px;
     font-size: 12pt;
     text-align: center;
-    color: #ddd;
+    color: #bbb;
     letter-spacing: 8px;
     font-family: Tahoma; }
     .sidebar .topLogo p {
@@ -63,7 +63,7 @@ body {
       color: teal; }
   .sidebar .navMenu, .sidebar .settingsMenu {
     font-size: 12pt;
-    color: #ddd;
+    color: #bbb;
     width: 100%; }
     .sidebar .navMenu .navItem, .sidebar .settingsMenu .navItem {
       padding: 10px 40px;
@@ -75,8 +75,10 @@ body {
         .sidebar .navMenu .navItem .navLink i, .sidebar .settingsMenu .navItem .navLink i {
           padding-right: 5px; }
   .sidebar .settingsMenu {
-    position: relative;
-    top: 100px; }
+    position: fixed;
+    width: 200px;
+    bottom: 0px;
+    margin-bottom: 20px; }
     .sidebar .settingsMenu .settingsItem {
       padding: 10px 40px;
       cursor: pointer; }
