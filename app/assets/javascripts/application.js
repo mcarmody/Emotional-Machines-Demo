@@ -45,16 +45,13 @@ $(document).ready(function() {
 		var fiveHoursAgo = currentTime-(limit / 240 * 60 * 60);
 		var highAlertHTML = $(this).siblings(".highAlerts");
 		var lowAlertHTML = $(this).siblings(".lowAlerts");
-		var tempHTML = $(this).siblings(".elementDatum");	
+		var tempHTML = $(this).siblings(".elementDatum");
+		var machineNameHTML = $(this).siblings(".elementName");
 		var highAlertCounter = 0;
 		var lowAlertCounter = 0;
 		
 
-		$.ajax({
-			url: "https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit,
-			dataType: 'json',
-			async: true,
-			success: function(data) {
+		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
 			
 				//check to make sure we can receive and parse the API data at all
 				console.log("Current temperature is " + data[data.length-1].tempextcal + ", logged at: " + data[data.length-1].sample_date);
@@ -87,12 +84,17 @@ $(document).ready(function() {
 
 				console.log("done, data length: " + data.length);
 				console.log("There have been " + highAlertCounter + " high-temp alerts and " + lowAlertCounter + " low alerts in the past " + limit / 240 + " hours.");
-			}
 		}).done( function() {
 			//update the page text
 			highAlertHTML.html(highAlertCounter);
 			lowAlertHTML.html(lowAlertCounter);
 			tempHTML.html(temp);
+		});
+
+		//update the machine name
+
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+			machineNameHTML.html(data.name);
 		});
 
 
