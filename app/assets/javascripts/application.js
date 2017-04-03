@@ -184,6 +184,7 @@ $(document).ready(function() {
 	$('.elementRow').find('.highAlerts').click( function() {
 		alertsModal.fadeIn();
 		$('.modalOverlay').fadeIn();
+		alertsModal.find('.alertsDetail').html('');
 
 		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
 			alertsModal.find('.alertsSubheader').html(data.name);
@@ -229,7 +230,7 @@ $(document).ready(function() {
 
 					// high temp alert check
 					if (Math.abs(loopTemp) < Math.abs(highAlert)) {
-						alertsModal.find('.alertsDetail').append('<div class=singleAlert>' + readableDate + ': ' + loopTemp + '°C </div>');
+						alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + ': </div><div class="singleAlertTemp">' + loopTemp + '°C </div>');
 						//console.log(temp);
 					};
 				};
@@ -240,6 +241,7 @@ $(document).ready(function() {
 	$('.elementRow').find('.lowAlerts').click( function() {
 		alertsModal.fadeIn();
 		$('.modalOverlay').fadeIn();
+		alertsModal.find('.alertsDetail').html('');
 
 		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
 			alertsModal.find('.alertsSubheader').html(data.name);
