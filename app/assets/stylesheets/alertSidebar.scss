@@ -1,0 +1,38 @@
+@import 'application.scss';
+@import 'editMenu.scss';
+
+.alertsModal {
+	position: absolute;
+	margin-left: -250px;
+	margin-right: -250px;
+	top: 200px;
+	height: 500px;
+	left: 50%;
+	display: none;
+	width: 500px;
+	border: 1px solid $border-color;
+	border-radius: 5px;
+	z-index: 3;
+	background-color: white;
+	padding: 15px;
+	box-shadow: 0 0 10px black;
+
+	.alertsHeader {
+		font-size: 24pt;
+		font-weight: 700;
+		margin-bottom: 15px;
+	}
+
+	.alertsDetail {
+		overflow: auto;
+		position: relative;
+		height: 400px;
+	}
+
+	.closeModal {
+		position: absolute;
+		top: 5px;
+		right: 10px;
+		cursor: pointer;
+	}
+};

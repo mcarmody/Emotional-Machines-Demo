@@ -30,8 +30,8 @@ $(document).ready(function() {
 	var isAM = true;
 	var readableDate;
 
-	var highAlert = -79.5;
-	var lowAlert = -80.5;
+	var highAlert = -77;
+	var lowAlert = -81;
 	var maxTemp = 0;
 	var temp = 0;
 	var timeStamp;
@@ -39,35 +39,43 @@ $(document).ready(function() {
 	var highAlertCounter = 0;
 	var lowAlertCounter = 0;
 
+	var alertsModal = $('.alertsModal');
+	var editMenu = $('.editMenu');
+
+	var currentTime = Math.round((today).getTime() / 1000);
+	var limit = 1200 //1200 is every data point within the past 5 hours
+	var fiveHoursAgo = currentTime-(limit / 240 * 60 * 60);
+
 	// the high and/or low alert values
 	$('.updateTempButton').click(function() {
 		var newHighTempThreshold = $(this).siblings('.highTempInput').val();
 		var newLowTempThreshold = $(this).siblings('.lowTempInput').val();
 
 		console.log(newHighTempThreshold + " " + newLowTempThreshold);
+		$(this).siblings('.successMessage').animate({'opacity':'1'}).delay(500);
+		$(this).siblings('.successMessage').animate({'opacity':'0'});
 
 		highAlert = newHighTempThreshold;
 		lowAlert = newLowTempThreshold;
 
 		// this is kicking back a 404
-		// $.ajax({
-		// 	type: 'POST',
-		// 	url: 'https://api.elementalmachines.io:443/api/alert_settings.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&machine_uuid=8092d98c-b92f-4343-a8ae-104f90362de8',
-		// 	dataType: 'application/json; charset=utf-8',
-		// 	data: 'test'
-		// });
+		$.ajax({
+			type: 'POST',
+			url: 'https://api.elementalmachines.io:443/api/alert_settings.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&machine_uuid=8092d98c-b92f-4343-a8ae-104f90362de8',
+			dataType: 'application/json; charset=utf-8',
+			data: 'test'
+		});
 
 		// this is just to prove that the alerts API request url works	
-		// $.getJSON('https://api.elementalmachines.io:443/api/alert_settings.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&machine_uuid=8092d98c-b92f-4343-a8ae-104f90362de8', function(data) {
-		// 	console.log(data);
-		// })
+		$.getJSON('https://api.elementalmachines.io:443/api/alert_settings.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&machine_uuid=8092d98c-b92f-4343-a8ae-104f90362de8', function(data) {
+			console.log(data);
+		})
 
 	});
 
 
 	//animate the edit menu and update the values there
 	$('.editButton').click(function() {
-		var editMenu = $('.editMenu');
 		editMenu.animate({width:'toggle'},300);
 
 		$('.highTempInput').attr('value', highAlert);
@@ -82,16 +90,13 @@ $(document).ready(function() {
 
 	// update the alert count, and check latest data readings
 	$('.alertButton').click(function() {
+		var highAlertCounter = 0;
+		var lowAlertCounter = 0;
 
-		var currentTime = Math.round((today).getTime() / 1000);
-		var limit = 1200 //1200 is every data point within the past 5 hours
-		var fiveHoursAgo = currentTime-(limit / 240 * 60 * 60);
 		var highAlertHTML = $(this).siblings(".highAlerts");
 		var lowAlertHTML = $(this).siblings(".lowAlerts");
 		var tempHTML = $(this).siblings(".elementDatum");
 		var machineNameHTML = $(this).siblings(".elementName");
-		var highAlertCounter = 0;
-		var lowAlertCounter = 0;
 		
 
 		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
@@ -173,6 +178,46 @@ $(document).ready(function() {
 		$(this).siblings(".lastUpdate").html(readableDate);
 	
 	});
+
+
+	//this is for opening the 'Alert Details' panel
+	$('.elementRow').find('.highAlerts').click( function() {
+		alertsModal.fadeIn();
+		$('.modalOverlay').fadeIn();
+
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+			alertsModal.find('.alertsSubheader').html(data.name);
+		});
+
+		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
+			
+				//check to make sure we can receive and parse the API data at all
+				temp = data[data.length-1].tempextcal;
+				console.log('working');
+
+				var i;
+
+				for (i = 0; i < data.length; i++) {
+					loopTemp = data[i].tempextcal;
+					loopTimeStamp = data[i].sample_epoch;
+					loopDate = data[i].sample_date;
+
+					// high temp alert check
+					if (Math.abs(loopTemp) < Math.abs(highAlert)) {
+						console.log('looping');
+						alertsModal.find('.alertsDetail').append('<div class=singleAlert>' + loopTimeStamp + ": " + loopTemp + '°C </div>');
+						//console.log(temp);
+					};
+				};
+			})
+
+
+	})
+
+	$('.closeModal').click( function() {
+		alertsModal.fadeOut();
+		$('.modalOverlay').fadeOut();
+	})
 
 	
 
