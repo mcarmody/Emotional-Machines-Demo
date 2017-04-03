@@ -39,7 +39,8 @@ body {
 .elementRow {
   display: inline-block; }
   .elementRow div {
-    display: inline-block; }
+    display: inline-block;
+    width: 110px; }
 
 .alertButton {
   color: white;

@@ -25,27 +25,57 @@ $(document).ready(function() {
 
 	var lastFiveHours = [];
 
+	var highAlert = -79.5;
+	var lowAlert = -80.5;
+
 	$('.alertButton').click(function() {
 
 		var currentTime = Math.round((new Date).getTime() / 1000);
 		var fiveHoursAgo = currentTime-(5*60*60);
 		console.log(currentTime);
 		console.log(fiveHoursAgo);
-		var limit = 1200 //this is every data point within the past 5 hours
+		var limit = 1200 //1200 is every data point within the past 5 hours
 
-		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit=1200", function(data) {
+		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
 			
 			//check to make sure we can receive and parse the API data at all
-			console.log("Current temperature is " + data[1].tempextcal);
+			console.log("Current temperature is " + data[data.length-1].tempextcal + ", logged at: " + data[data.length-1].sample_date);
 
 			var i;
+			var maxTemp = 0;
+			var temp = 0;
+			var timeStamp;
+			var date;
+			var highAlertCounter = 0;
+			var lowAlertCounter = 0;
+
 			for (i = 0; i < data.length; i++) {
-				var temp = data[i].tempextcal;
-				var timeStamp = data[i].sample_epoch;
-				var date = data[i].sample_date;
+				temp = data[i].tempextcal;
+				timeStamp = data[i].sample_epoch;
+				date = data[i].sample_date;
+
+				// high temp alert check
+				if (Math.abs(temp) < Math.abs(highAlert)) {
+					highAlertCounter++;
+					//console.log(temp);
+				};
+
+				// low temp alert check
+				if (Math.abs(temp) > Math.abs(lowAlert)) {
+					lowAlertCounter++;
+					//console.log(temp);
+				};
+
+				if (Math.abs(temp) > maxTemp) {
+					maxTemp = data[i].tempextcal;
+				};
 			};
 
-			console.log("done, data length: "+ data.length);
+			console.log("done, data length: " + data.length);
+			console.log("High Temp Alerts: " + highAlertCounter);
+			console.log("Low Temp Alerts: " + lowAlertCounter);
+
+			alert("There have been " + highAlertCounter + " high-temp alerts and " + lowAlertCounter + " low alerts in the past " + limit / 240 + " hours.");
 		});
 	})
 
