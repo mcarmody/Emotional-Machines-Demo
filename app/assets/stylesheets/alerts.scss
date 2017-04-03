@@ -20,13 +20,15 @@
 	}
 }
 
-.alertButton {
+#alertButton {
 	color: white;
 	background-color: black;
 	padding: 4px;
 	border: 1px solid teal;
 	border-radius: 5px;
 	cursor: pointer;
+	font-size: 16pt;
+	width: 70px;
 
 	&:active {
 		background-color: lighten(black, 30%);

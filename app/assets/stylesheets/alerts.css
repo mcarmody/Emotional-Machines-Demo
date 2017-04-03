@@ -50,14 +50,16 @@ body {
     width: 150px;
     font-size: 12pt; }
 
-.alertButton {
+#alertButton {
   color: white;
   background-color: black;
   padding: 4px;
   border: 1px solid teal;
   border-radius: 5px;
-  cursor: pointer; }
-  .alertButton:active {
+  cursor: pointer;
+  font-size: 16pt;
+  width: 70px; }
+  #alertButton:active {
     background-color: #4d4d4d; }
 
 /*# sourceMappingURL=alerts.css.map */
