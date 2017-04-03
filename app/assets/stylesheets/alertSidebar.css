@@ -158,6 +158,18 @@ body {
   background-color: white;
   padding: 15px;
   box-shadow: 0 0 10px black; }
+  .alertsModal .alertsSubheader {
+    display: inline-block;
+    position: relative;
+    font-style: italic;
+    margin-bottom: 10px;
+    width: 200px;
+    margin-right: 10px; }
+  .alertsModal .currentTemp {
+    display: inline-block;
+    font-style: italic;
+    position: relative;
+    color: #bbb; }
   .alertsModal .alertsHeader {
     font-size: 24pt;
     font-weight: 700;
@@ -165,7 +177,18 @@ body {
   .alertsModal .alertsDetail {
     overflow: auto;
     position: relative;
-    height: 400px; }
+    height: 400px;
+    border-top: 1px solid #a2a2a2;
+    padding-top: 5px; }
+    .alertsModal .alertsDetail .singleAlertDate {
+      font-weight: 600;
+      display: inline-block;
+      width: 200px;
+      margin-bottom: 3px; }
+    .alertsModal .alertsDetail .singleAlertTemp {
+      display: inline-block;
+      width: 200px;
+      font-style: italic; }
   .alertsModal .closeModal {
     position: absolute;
     top: 5px;
