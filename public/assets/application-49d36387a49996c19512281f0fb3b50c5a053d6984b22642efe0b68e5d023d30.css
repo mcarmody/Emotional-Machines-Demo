@@ -8,7 +8,7 @@ Error: File to import not found or unreadable: bourbon.
 14:  *= require_self
 15:  *\/
 16: 
-17: @import "bourbon";
+17: 
 18: @import "home";
 19: @import "users";
 20: 
