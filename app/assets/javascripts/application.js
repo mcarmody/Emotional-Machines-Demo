@@ -112,126 +112,71 @@ $(document).ready(function() {
 
 
 	//this is for opening the 'Alert Details' panel
-	$('.elementRow').find('.highAlerts').click( function() {
-		alertsModal.fadeIn();
-		$('.modalOverlay').fadeIn();
-		alertsModal.find('.alertsDetail').html('');
-		alertsModal.find('.alertsHeader').html('');
-		alertsModal.find('.currentTemp').html('');
+	// $('.elementRow').on('click', '.alertLink', function() {
+	// 	alertsModal.fadeIn();
+	// 	$('.modalOverlay').fadeIn();
+	// 	alertsModal.find('.alertsDetail').html('');
+	// 	alertsModal.find('.alertsHeader').html('');
+	// 	alertsModal.find('.currentTemp').html('');
 
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-			alertsModal.find('.alertsHeader').html(data.name);
-		});
+	// 	$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+	// 		alertsModal.find('.alertsHeader').html(data.name);
+	// 	});
 
-		$.getJSON("https://api.elementalmachines.io/api/machines/" + machinesList[0] + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
+	// 	$.getJSON("https://api.elementalmachines.io/api/machines/" + machinesList[0] + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
 			
-			//check to make sure we can receive and parse the API data at all
-			temp = data[data.length-1].tempextcal;
-			$('.currentTemp').html('Current Temperature: ' + temp + '°C');
-			console.log('working');
+	// 		//check to make sure we can receive and parse the API data at all
+	// 		temp = data[data.length-1].tempextcal;
+	// 		$('.currentTemp').html('Current Temperature: ' + temp + '°C');
+	// 		console.log('working');
 
-			var i;
-			var loopDate;
+	// 		var i;
+	// 		var loopDate;
 
-			for (i = 0; i < data.length; i++) {
-				loopTemp = data[i].tempextcal;
-				loopDate = new Date(data[i].sample_epoch*1000);
-				console.log(loopDate);
+	// 		for (i = 0; i < data.length; i++) {
+	// 			loopTemp = data[i].tempextcal;
+	// 			loopDate = new Date(data[i].sample_epoch*1000);
 
-				if (loopDate.getHours() > 12) {
-					hours = loopDate.getHours()-12;
-					isAM = false;
-				} else {
-					hours = loopDate.getHours();
-				};
+	// 			if (loopDate.getHours() > 12) {
+	// 				hours = loopDate.getHours()-12;
+	// 				isAM = false;
+	// 			} else {
+	// 				hours = loopDate.getHours();
+	// 			};
 				
-				var minutes;
+	// 			var minutes;
 
-				if (loopDate.getMinutes() < 10) {
-					minutes = "0" + loopDate.getMinutes()
-				} else {
-					minutes = loopDate.getMinutes();
-				};
+	// 			if (loopDate.getMinutes() < 10) {
+	// 				minutes = "0" + loopDate.getMinutes()
+	// 			} else {
+	// 				minutes = loopDate.getMinutes();
+	// 			};
 
-				if (isAM) {
-					minutes = minutes + " AM"
-				} else {
-					minutes = minutes + " PM"
-				};
+	// 			if (isAM) {
+	// 				minutes = minutes + " AM"
+	// 			} else {
+	// 				minutes = minutes + " PM"
+	// 			};
 
-				readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + hours + ":" + minutes;
+	// 			readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + hours + ":" + minutes;
 
 
-				// high temp alert check
-				if (Math.abs(loopTemp) < Math.abs(highAlert)) {
-					alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + '</div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
-					//console.log(temp);
-				};
-			};
-		})
+	// 			// high temp alert check
+	// 			if (Math.abs(loopTemp) < Math.abs(highAlert)) {
+	// 				alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + '</div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
+	// 				//console.log(temp);
+	// 			};
+	// 		};
+	// 	})
+	// 	alertsModal.find('.modalThresholdText').html('High Temp Threshold: ' + lowAlert + '°C');
+	// })
+
+	//this is for opening the 'Alert Details' panel
+	$('.elementRow').on('click', '.alertLink', function() {
+		$(tempAlertModal);
 		alertsModal.find('.modalThresholdText').html('Low Temp Threshold: ' + lowAlert + '°C');
 	})
 
-	//this is for opening the 'Alert Details' panel
-	$('.elementRow').find('.lowAlerts').click( function() {
-		alertsModal.fadeIn();
-		$('.modalOverlay').fadeIn();
-		alertsModal.find('.alertsDetail').html('');
-		alertsModal.find('.alertsHeader').html('');
-		alertsModal.find('.currentTemp').html('');
-
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-			alertsModal.find('.alertsHeader').html(data.name);
-		});
-
-		$.getJSON("https://api.elementalmachines.io/api/machines/" + machinesList[0] + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
-			
-			//check to make sure we can receive and parse the API data at all
-			temp = data[data.length-1].tempextcal;
-			$('.currentTemp').html('Current Temperature: ' + temp + '°C');
-			console.log('working');
-
-			var i;
-
-			for (i = 0; i < data.length; i++) {
-				loopTemp = data[i].tempextcal;
-				var loopDate = new Date(data[i].sample_epoch*1000);
-
-				if (loopDate.getHours() > 12) {
-					hours = loopDate.getHours()-12;
-					isAM = false;
-				} else {
-					hours = loopDate.getHours();
-				};
-				
-				var minutes;
-
-				if (loopDate.getMinutes() < 10) {
-					minutes = "0" + loopDate.getMinutes()
-				} else {
-					minutes = loopDate.getMinutes();
-				};
-
-				if (isAM) {
-					minutes = minutes + " AM"
-				} else {
-					minutes = minutes + " PM"
-				};
-
-				readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + hours + ":" + minutes;
-
-
-				// low temp alert check
-				if (Math.abs(loopTemp) > Math.abs(lowAlert)) {
-					alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + '</div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
-					//console.log(temp);
-				};
-			};
-		});
-
-		alertsModal.find('.modalThresholdText').html('High Temp Threshold: ' + lowAlert + '°C');
-
-	})
 
 	$('.closeModal').click( function() {
 		alertsModal.fadeOut();
@@ -352,6 +297,63 @@ $(document).ready(function() {
 	    $('#alertButton').click(function() {
 	        //this just simulates a click, running the update function
 	    }).click();
+	};
+
+	function tempAlertModal() {
+		alertsModal.fadeIn();
+		$('.modalOverlay').fadeIn();
+		alertsModal.find('.alertsDetail').html('');
+		alertsModal.find('.alertsHeader').html('');
+		alertsModal.find('.currentTemp').html('');
+
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+			alertsModal.find('.alertsHeader').html(data.name);
+		});
+
+		$.getJSON("https://api.elementalmachines.io/api/machines/" + machinesList[0] + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
+			
+			//check to make sure we can receive and parse the API data at all
+			temp = data[data.length-1].tempextcal;
+			$('.currentTemp').html('Current Temperature: ' + temp + '°C');
+			console.log('working');
+
+			var i;
+
+			for (i = 0; i < data.length; i++) {
+				loopTemp = data[i].tempextcal;
+				var loopDate = new Date(data[i].sample_epoch*1000);
+
+				if (loopDate.getHours() > 12) {
+					hours = loopDate.getHours()-12;
+					isAM = false;
+				} else {
+					hours = loopDate.getHours();
+				};
+				
+				var minutes;
+
+				if (loopDate.getMinutes() < 10) {
+					minutes = "0" + loopDate.getMinutes()
+				} else {
+					minutes = loopDate.getMinutes();
+				};
+
+				if (isAM) {
+					minutes = minutes + " AM"
+				} else {
+					minutes = minutes + " PM"
+				};
+
+				readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + hours + ":" + minutes;
+
+
+				// low temp alert check
+				if (Math.abs(loopTemp) > Math.abs(lowAlert)) {
+					alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + '</div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
+					//console.log(temp);
+				};
+			};
+		});
 	};
 });
 
