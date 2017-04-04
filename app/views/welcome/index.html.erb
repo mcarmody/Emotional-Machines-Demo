@@ -75,78 +75,52 @@
 
 <!-- main page container stuff below here -->
 <div class="container">
-
-	<div class="elementGroup">
-		<div class="elementHeader">
-			<a class="elementDrop">
-				<i class="fa fa-caret-right" aria-hidden="true"></i>
-			</a>
-			Group 1
+	<div class="detailTable">
+		<div class="columnHeaders">
+			<div class="elementName">Element</div>
+			<div class="lastUpdate">Last Updated</div>
+			<div class="highAlerts">High Alerts</div>
+			<div class="lowAlerts">Low Alerts</div>
+			<div class="elementDatum">Data (°C)</div>
+			<div class="alertButtonHeader"></div>
 		</div>
-		<div class="detailTable hidden">
-			<div class="columnHeaders">
-				<div class="elementName">Element</div>
-				<div class="lastUpdate">Last Updated</div>
-				<div class="highAlerts">High Alerts</div>
-				<div class="lowAlerts">Low Alerts</div>
-				<div class="elementDatum">Data (°C)</div>
-				<div class="alertButtonHeader"></div>
-			</div>
-			<div class="elementRow">
-				<div class="elementName"></div>
-				<div class="lastUpdate"></div>
-				<div class="highAlerts"></div>
-				<div class="lowAlerts"></div>
-				<div class="elementDatum"></div>
-				<div class="alertButton" id = "alertButton">Refresh</div>
-				<div class="editButton" id = "editButton">Edit</div>
-			</div>
-			<div class="elementRow">
-				<div class="elementName"></div>
-				<div class="lastUpdate"></div>
-				<div class="highAlerts"></div>
-				<div class="lowAlerts"></div>
-				<div class="elementDatum"></div>
-				<div class="alertButton" id = "alertButton">Refresh</div>
-				<div class="editButton" id = "editButton">Edit</div>
-			</div>		
+		<div class="elementRow">
+			<div class="elementName"></div>
+			<div class="lastUpdate"></div>
+			<div class="highAlerts alertText"></div>
+			<div class="lowAlerts alertText"></div>
+			<div class="elementDatum"></div>
+			<div class="alertButton" id = "alertButton">Refresh</div>
+			<div class="editButton" id = "editButton">Edit</div>
 		</div>
+		<div class="elementRow">
+			<div class="elementName"></div>
+			<div class="lastUpdate"></div>
+			<div class="highAlerts alertText"></div>
+			<div class="lowAlerts alertText"></div>
+			<div class="elementDatum"></div>
+			<div class="alertButton" id = "alertButton">Refresh</div>
+			<div class="editButton" id = "editButton">Edit</div>
+		</div>		
 	</div>
 
-	<div class="elementGroup">
-		<div class="elementHeader">
-			<a class="elementDrop">
-				<i class="fa fa-caret-right" aria-hidden="true"></i>
-			</a>
-			Group 2
-		</div>
-		<div class="detailTable hidden">
-			<tr class="columnHeaders">
-				<td class="elementName"></td>
-				<td class="lastUpdate"></td>
-				<td class="elementAlerts"></td>
-				<td class="elementGraphs"></td>
-				<td class="elementDatum"></td>
-				<td class="elementDatum"></td>
-			</tr>
-			<tr class="elementRow">
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>		
-		</div>
-	</div>
-
-	<div class="elementGroup">
-		<div class="elementHeader">
-			<a class="elementDrop">
-				<i class="fa fa-caret-right" aria-hidden="true"></i>
-			</a>
-			Group C
-		</div>
+	<div class="detailTable hidden">
+		<tr class="columnHeaders">
+			<td class="elementName"></td>
+			<td class="lastUpdate"></td>
+			<td class="elementAlerts"></td>
+			<td class="elementGraphs"></td>
+			<td class="elementDatum"></td>
+			<td class="elementDatum"></td>
+		</tr>
+		<tr class="elementRow">
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>		
 	</div>
 
 </div>

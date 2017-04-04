@@ -57,7 +57,10 @@ body {
     color: black; }
 
 .elementRow {
-  display: block; }
+  display: block;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #6f6f6f; }
   .elementRow div {
     display: inline-block;
     width: 150px;
@@ -78,25 +81,12 @@ body {
 #editButton {
   width: 40px; }
 
-.elementGroup {
-  padding: 20px 15px 0px 15px;
-  font-size: 16pt;
-  color: white; }
-  .elementGroup .elementHeader {
-    width: 750px;
-    background-color: teal;
-    height: 25px;
-    padding: 5px;
-    border: 1px solid #222;
-    user-select: none;
-    cursor: pointer; }
-    .elementGroup .elementHeader .fa-caret-right {
-      padding-left: 5px; }
-  .elementGroup .detailTable {
-    padding: 5px 5px 0px 15px;
-    color: #6f6f6f; }
-  .elementGroup .highlighted {
-    background-color: #00b3b3; }
+.detailTable {
+  padding: 5px 5px 0px 15px;
+  color: #6f6f6f; }
+
+.highlighted {
+  background-color: #00b3b3; }
 
 .hideButton {
   position: absolute;
@@ -113,5 +103,10 @@ body {
   cursor: pointer; }
   .hideButton:hover {
     background-color: #00e6e6; }
+
+.alertLink {
+  text-decoration: underline;
+  color: #0000cc;
+  cursor: pointer; }
 
 /*# sourceMappingURL=alerts.css.map */

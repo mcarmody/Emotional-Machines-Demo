@@ -29,6 +29,7 @@ $(document).ready(function() {
 	var today = new Date;
 	var isAM = true;
 	var readableDate;
+	var selectedElement;
 
 	var highAlert = -77;
 	var lowAlert = -81;
@@ -106,49 +107,49 @@ $(document).ready(function() {
 
 		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
 			
-				//check to make sure we can receive and parse the API data at all
-				temp = data[data.length-1].tempextcal;
-				$('.currentTemp').html('Current Temperature: ' + temp + '°C');
-				console.log('working');
+			//check to make sure we can receive and parse the API data at all
+			temp = data[data.length-1].tempextcal;
+			$('.currentTemp').html('Current Temperature: ' + temp + '°C');
+			console.log('working');
 
-				var i;
-				var loopDate;
+			var i;
+			var loopDate;
 
-				for (i = 0; i < data.length; i++) {
-					loopTemp = data[i].tempextcal;
-					loopDate = new Date(data[i].sample_epoch*1000);
+			for (i = 0; i < data.length; i++) {
+				loopTemp = data[i].tempextcal;
+				loopDate = new Date(data[i].sample_epoch*1000);
 
-					if (loopDate.getHours > 12) {
-						hours = loopDate.getHours()-12;
-						isAM = false;
-					} else {
-						hours = loopDate.getHours();
-					};
-					
-					var minutes;
-
-					if (loopDate.getMinutes() < 10) {
-						minutes = "0" + loopDate.getMinutes()
-					} else {
-						minutes = loopDate.getMinutes();
-					};
-
-					if (isAM) {
-						minutes = minutes + " AM"
-					} else {
-						minutes = minutes + " PM"
-					};
-
-					readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + loopDate.getHours() + ":" + minutes;
-
-
-					// high temp alert check
-					if (Math.abs(loopTemp) < Math.abs(highAlert)) {
-						alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + ': </div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
-						//console.log(temp);
-					};
+				if (loopDate.getHours > 12) {
+					hours = loopDate.getHours()-12;
+					isAM = false;
+				} else {
+					hours = loopDate.getHours();
 				};
-			})
+				
+				var minutes;
+
+				if (loopDate.getMinutes() < 10) {
+					minutes = "0" + loopDate.getMinutes()
+				} else {
+					minutes = loopDate.getMinutes();
+				};
+
+				if (isAM) {
+					minutes = minutes + " AM"
+				} else {
+					minutes = minutes + " PM"
+				};
+
+				readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + loopDate.getHours() + ":" + minutes;
+
+
+				// high temp alert check
+				if (Math.abs(loopTemp) < Math.abs(highAlert)) {
+					alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + ': </div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
+					//console.log(temp);
+				};
+			};
+		})
 	})
 
 	//this is for opening the 'Alert Details' panel
@@ -214,9 +215,11 @@ $(document).ready(function() {
 		$('.modalOverlay').fadeOut();
 	})
 
+	// the modular function to refresh
 	function updateTable() {
 		var highAlertCounter = 0;
 		var lowAlertCounter = 0;
+		selectedElement = $(this);
 
 		var highAlertHTML = $(this).siblings(".highAlerts");
 		var lowAlertHTML = $(this).siblings(".lowAlerts");
@@ -258,10 +261,27 @@ $(document).ready(function() {
 				console.log("done, data length: " + data.length);
 				console.log("There have been " + highAlertCounter + " high-temp alerts and " + lowAlertCounter + " low alerts in the past " + limit / 240 + " hours.");
 		}).done( function() {
+
 			//update the page text
 			highAlertHTML.html(highAlertCounter);
 			lowAlertHTML.html(lowAlertCounter);
 			tempHTML.html(temp);
+
+		}).done( function() {
+
+			var highAlertLink = $(selectedElement).siblings('.highAlerts');
+			var lowAlertLink = $(selectedElement).siblings('.lowAlerts');
+			console.log('test');
+
+			if (highAlertLink.text() > 0) {
+				highAlertLink.addClass('alertLink');
+				console.log('high link!');
+			};
+
+			if (lowAlertLink.text() > 0) {
+				lowAlertLink.addClass('alertLink');
+				console.log('low link!');
+			};
 		});
 
 		//update the machine name
@@ -301,7 +321,6 @@ $(document).ready(function() {
 
 		//update the page text
 		$(this).siblings(".lastUpdate").html(readableDate);
-	
 	};
 });
 

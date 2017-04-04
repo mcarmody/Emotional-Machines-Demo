@@ -12,6 +12,9 @@
 
 .elementRow{
 	display: block;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	color: $primary-subheader-color;
 
 	div {
 		display: inline-block;
@@ -40,37 +43,16 @@
 	width: 40px;
 }
 
-.elementGroup {
+.detailTable {
+	padding: 5px 5px 0px 15px;
+	color: $primary-subheader-color;
 
-	padding: 20px 15px 0px 15px;
-	font-size: 16pt;
-	color: $primary-header-color;
-
-	.elementHeader {
-		width: 750px;
-		background-color: teal;
-		height: 25px;
-		padding: 5px;
-		border: 1px solid $border-color;
-		user-select: none;
-		cursor: pointer;
-
-		.fa-caret-right {
-			padding-left: 5px;
-		}
+	.elementRow {
 	}
+}
 
-	.detailTable {
-		padding: 5px 5px 0px 15px;
-		color: $primary-subheader-color;
-
-		.elementRow {
-		}
-	}
-
-	.highlighted {
-		background-color: lighten(teal, 10%);
-	}
+.highlighted {
+	background-color: lighten(teal, 10%);
 }
 
 .hideButton {
@@ -90,4 +72,10 @@
 	&:hover {
 		background-color: lighten($primary-logo-color, 10%);
 	}
+}
+
+.alertLink {
+	text-decoration: underline;
+	color: $link-color;
+	cursor: pointer;
 }
