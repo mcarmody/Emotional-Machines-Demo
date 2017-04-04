@@ -19,11 +19,7 @@
 $(document).ready(function() {
 
 	// load up the element data on page load
-	$(function() {
-	    $('#alertButton').click(function() {
-	        //this just simulates a click, running the function below
-	    }).click();
-	});
+	$(forceRefresh);
 
 	$('.elementHeader').click(function() {
 		$(this).toggleClass('highlighted');
@@ -53,6 +49,10 @@ $(document).ready(function() {
 	var limit = 1200 //1200 is every data point within the past 5 hours
 	var fiveHoursAgo = currentTime-(limit / 240 * 60 * 60);
 
+	var machinesList = [
+		'8092d98c-b92f-4343-a8ae-104f90362de8',
+	];
+
 	// the high and/or low alert values
 	$('#updateTempButton').click(function() {
 		var newHighTempThreshold = $(this).siblings('.highTempInput').val();
@@ -74,11 +74,11 @@ $(document).ready(function() {
 		// });
 
 		// this is just to prove that the alerts API request url works	
-		$.getJSON('https://api.elementalmachines.io:443/api/alert_settings.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&machine_uuid=8092d98c-b92f-4343-a8ae-104f90362de8', function(data) {
+		$.getJSON('https://api.elementalmachines.io:443/api/alert_settings.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&machine_uuid=' + machinesList[0], function(data) {
 			console.log(data);
 		})
 
-		updateTable();
+		$(forceRefresh);
 
 	});
 
@@ -90,7 +90,7 @@ $(document).ready(function() {
 		$('.highTempInput').attr('placeholder', highAlert);
 		$('.lowTempInput').attr('placeholder', lowAlert);
 
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
 			editMenu.find('.editHeader').html(data.name);
 		});
 	});
@@ -101,7 +101,7 @@ $(document).ready(function() {
 		$('.highTempInput').attr('placeholder', highAlert);
 		$('.lowTempInput').attr('placeholder', lowAlert);
 
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
 			editMenu.find('.editHeader').html(data.name);
 		});
 	});
@@ -116,12 +116,14 @@ $(document).ready(function() {
 		alertsModal.fadeIn();
 		$('.modalOverlay').fadeIn();
 		alertsModal.find('.alertsDetail').html('');
+		alertsModal.find('.alertsHeader').html('');
+		alertsModal.find('.currentTemp').html('');
 
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
 			alertsModal.find('.alertsHeader').html(data.name);
 		});
 
-		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
+		$.getJSON("https://api.elementalmachines.io/api/machines/" + machinesList[0] + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
 			
 			//check to make sure we can receive and parse the API data at all
 			temp = data[data.length-1].tempextcal;
@@ -157,17 +159,17 @@ $(document).ready(function() {
 					minutes = minutes + " PM"
 				};
 
-				readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + loopDate.getHours() + ":" + minutes;
+				readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + hours + ":" + minutes;
 
 
 				// high temp alert check
 				if (Math.abs(loopTemp) < Math.abs(highAlert)) {
-					alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + ': </div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
+					alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + '</div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
 					//console.log(temp);
 				};
 			};
 		})
-		alertsModal.find('.modalThresholdText').html(highAlert);
+		alertsModal.find('.modalThresholdText').html('Low Temp Threshold: ' + lowAlert + '°C');
 	})
 
 	//this is for opening the 'Alert Details' panel
@@ -175,12 +177,14 @@ $(document).ready(function() {
 		alertsModal.fadeIn();
 		$('.modalOverlay').fadeIn();
 		alertsModal.find('.alertsDetail').html('');
+		alertsModal.find('.alertsHeader').html('');
+		alertsModal.find('.currentTemp').html('');
 
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-			alertsModal.find('.alertsSubheader').html(data.name);
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+			alertsModal.find('.alertsHeader').html(data.name);
 		});
 
-		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
+		$.getJSON("https://api.elementalmachines.io/api/machines/" + machinesList[0] + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
 			
 			//check to make sure we can receive and parse the API data at all
 			temp = data[data.length-1].tempextcal;
@@ -219,19 +223,20 @@ $(document).ready(function() {
 
 				// low temp alert check
 				if (Math.abs(loopTemp) > Math.abs(lowAlert)) {
-					alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + ': </div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
+					alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + '</div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
 					//console.log(temp);
 				};
 			};
 		});
 
-		alertsModal.find('.modalThresholdText').html(lowAlert);
+		alertsModal.find('.modalThresholdText').html('High Temp Threshold: ' + lowAlert + '°C');
 
 	})
 
 	$('.closeModal').click( function() {
 		alertsModal.fadeOut();
 		$('.modalOverlay').fadeOut();
+		$(forceRefresh);
 	})
 
 	// the modular function to refresh
@@ -246,7 +251,7 @@ $(document).ready(function() {
 		var machineNameHTML = $(this).siblings(".elementName");
 		
 
-		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
+		$.getJSON("https://api.elementalmachines.io/api/machines/" + machinesList[0] + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
 			
 				//check to make sure we can receive and parse the API data at all
 				console.log("Current temperature is " + data[data.length-1].tempextcal + ", logged at: " + data[data.length-1].sample_date);
@@ -293,16 +298,20 @@ $(document).ready(function() {
 
 			if (highAlertLink.text() > 0) {
 				highAlertLink.addClass('alertLink');
+			} else {
+				highAlertLink.removeClass('alertLink');
 			};
 
 			if (lowAlertLink.text() > 0) {
 				lowAlertLink.addClass('alertLink');
+			} else {
+				lowAlertLink.removeClass('alertLink');
 			};
 		});
 
 		//update the machine name
 
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
 			machineNameHTML.html(data.name);
 		});
 
@@ -337,6 +346,12 @@ $(document).ready(function() {
 
 		//update the page text
 		$(this).siblings(".lastUpdate").html(readableDate);
+	};
+
+	function forceRefresh() {
+	    $('#alertButton').click(function() {
+	        //this just simulates a click, running the update function
+	    }).click();
 	};
 });
 

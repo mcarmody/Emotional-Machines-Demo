@@ -71,7 +71,8 @@ body {
     color: #bbb; }
 
 .columnHeaders {
-  display: block; }
+  display: block;
+  font-weight: 700; }
   .columnHeaders div {
     display: inline-block;
     width: 150px;
