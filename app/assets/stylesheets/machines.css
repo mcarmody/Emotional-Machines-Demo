@@ -49,4 +49,25 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 2; }
 
+.primaryButton {
+  color: teal;
+  padding: 6px;
+  border: 1px solid teal;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12pt;
+  text-align: center; }
+  .primaryButton:active {
+    background-color: #4d4d4d; }
+
+.inputBox {
+  border-radius: 3px;
+  box-shadow: none;
+  border: 1px solid #999;
+  padding: 2px;
+  font-size: 10pt;
+  color: black; }
+  .inputBox::placeholder {
+    color: #bbb; }
+
 /*# sourceMappingURL=machines.css.map */

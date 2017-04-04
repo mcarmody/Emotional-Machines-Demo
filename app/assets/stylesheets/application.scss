@@ -16,7 +16,8 @@
 
  $primary-font-color: #bbb;
  $link-color: darken(blue, 10%);
- $border-color: #222;
+ $border-color: #999;
+ $button-color: teal;
  $primary-header-color: lighten($primary-font-color, 30%);
  $primary-subheader-color: darken($primary-font-color, 30%);
  $primary-logo-color: lighten(teal, 10%);
@@ -63,4 +64,31 @@ body {
 	height: 100%;
 	background-color: transparentize(black, .5);
 	z-index: 2;
+}
+
+.primaryButton {
+	color: $button-color;
+	padding: 6px;
+	border: 1px solid teal;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 12pt;
+	text-align: center;
+
+	&:active {
+		background-color: lighten(black, 30%);
+	};
+}
+
+.inputBox {
+	border-radius: 3px;
+	box-shadow: none;
+	border:	1px solid $border-color;
+	padding: 2px;
+	font-size: 10pt;
+	color: black;
+
+	&::placeholder {
+		color: $primary-font-color;
+	};
 }

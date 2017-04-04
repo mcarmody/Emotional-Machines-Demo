@@ -18,6 +18,12 @@
 
 $(document).ready(function() {
 
+	// load up the element data on page load
+	$(function() {
+	    $('#alertButton').click(function() {
+	        //this just simulates a click, running the function below
+	    }).click();
+	});
 
 	$('.elementHeader').click(function() {
 		$(this).toggleClass('highlighted');
@@ -48,7 +54,7 @@ $(document).ready(function() {
 	var fiveHoursAgo = currentTime-(limit / 240 * 60 * 60);
 
 	// the high and/or low alert values
-	$('.updateTempButton').click(function() {
+	$('#updateTempButton').click(function() {
 		var newHighTempThreshold = $(this).siblings('.highTempInput').val();
 		var newLowTempThreshold = $(this).siblings('.lowTempInput').val();
 
@@ -78,21 +84,31 @@ $(document).ready(function() {
 
 
 	//animate the edit menu and update the values there
-	$('.editButton').click(function() {
+	$('#editButton').click(function() {
 		editMenu.animate({width:'toggle'},300);
 
-		$('.highTempInput').attr('value', highAlert);
-		$('.lowTempInput').attr('value', lowAlert);
+		$('.highTempInput').attr('placeholder', highAlert);
+		$('.lowTempInput').attr('placeholder', lowAlert);
 
 		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-			editMenu.find('.editHeader').html(data.name + " Alerts");
+			editMenu.find('.editHeader').html(data.name);
 		});
-		
+	});
+
+	$('.hideButton').click(function() {
+		editMenu.animate({width:'toggle'},300);
+
+		$('.highTempInput').attr('placeholder', highAlert);
+		$('.lowTempInput').attr('placeholder', lowAlert);
+
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+			editMenu.find('.editHeader').html(data.name);
+		});
 	});
 
 
 	// update the alert count, and check latest data readings
-	$('.alertButton').click(updateTable);
+	$('#alertButton').click(updateTable);
 
 
 	//this is for opening the 'Alert Details' panel
@@ -102,7 +118,7 @@ $(document).ready(function() {
 		alertsModal.find('.alertsDetail').html('');
 
 		$.getJSON("https://api.elementalmachines.io:443/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-			alertsModal.find('.alertsSubheader').html(data.name);
+			alertsModal.find('.alertsHeader').html(data.name);
 		});
 
 		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
@@ -118,8 +134,9 @@ $(document).ready(function() {
 			for (i = 0; i < data.length; i++) {
 				loopTemp = data[i].tempextcal;
 				loopDate = new Date(data[i].sample_epoch*1000);
+				console.log(loopDate);
 
-				if (loopDate.getHours > 12) {
+				if (loopDate.getHours() > 12) {
 					hours = loopDate.getHours()-12;
 					isAM = false;
 				} else {
@@ -150,6 +167,7 @@ $(document).ready(function() {
 				};
 			};
 		})
+		alertsModal.find('.modalThresholdText').html(highAlert);
 	})
 
 	//this is for opening the 'Alert Details' panel
@@ -164,49 +182,50 @@ $(document).ready(function() {
 
 		$.getJSON("https://api.elementalmachines.io/api/machines/8092d98c-b92f-4343-a8ae-104f90362de8/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
 			
-				//check to make sure we can receive and parse the API data at all
-				temp = data[data.length-1].tempextcal;
-				$('.currentTemp').html('Current Temperature: ' + temp + '°C');
-				console.log('working');
+			//check to make sure we can receive and parse the API data at all
+			temp = data[data.length-1].tempextcal;
+			$('.currentTemp').html('Current Temperature: ' + temp + '°C');
+			console.log('working');
 
-				var i;
+			var i;
 
-				for (i = 0; i < data.length; i++) {
-					loopTemp = data[i].tempextcal;
-					var loopDate = new Date(data[i].sample_epoch*1000);
+			for (i = 0; i < data.length; i++) {
+				loopTemp = data[i].tempextcal;
+				var loopDate = new Date(data[i].sample_epoch*1000);
 
-					if (loopDate.getHours > 12) {
-						hours = loopDate.getHours()-12;
-						isAM = false;
-					} else {
-						hours = loopDate.getHours();
-					};
-					
-					var minutes;
-
-					if (loopDate.getMinutes() < 10) {
-						minutes = "0" + loopDate.getMinutes()
-					} else {
-						minutes = loopDate.getMinutes();
-					};
-
-					if (isAM) {
-						minutes = minutes + " AM"
-					} else {
-						minutes = minutes + " PM"
-					};
-
-					readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + loopDate.getHours() + ":" + minutes;
-
-
-					// low temp alert check
-					if (Math.abs(loopTemp) > Math.abs(lowAlert)) {
-						alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + ': </div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
-						//console.log(temp);
-					};
+				if (loopDate.getHours() > 12) {
+					hours = loopDate.getHours()-12;
+					isAM = false;
+				} else {
+					hours = loopDate.getHours();
 				};
-			})
+				
+				var minutes;
 
+				if (loopDate.getMinutes() < 10) {
+					minutes = "0" + loopDate.getMinutes()
+				} else {
+					minutes = loopDate.getMinutes();
+				};
+
+				if (isAM) {
+					minutes = minutes + " AM"
+				} else {
+					minutes = minutes + " PM"
+				};
+
+				readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + hours + ":" + minutes;
+
+
+				// low temp alert check
+				if (Math.abs(loopTemp) > Math.abs(lowAlert)) {
+					alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + ': </div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
+					//console.log(temp);
+				};
+			};
+		});
+
+		alertsModal.find('.modalThresholdText').html(lowAlert);
 
 	})
 
@@ -271,16 +290,13 @@ $(document).ready(function() {
 
 			var highAlertLink = $(selectedElement).siblings('.highAlerts');
 			var lowAlertLink = $(selectedElement).siblings('.lowAlerts');
-			console.log('test');
 
 			if (highAlertLink.text() > 0) {
 				highAlertLink.addClass('alertLink');
-				console.log('high link!');
 			};
 
 			if (lowAlertLink.text() > 0) {
 				lowAlertLink.addClass('alertLink');
-				console.log('low link!');
 			};
 		});
 
@@ -295,7 +311,7 @@ $(document).ready(function() {
 
 		var hours;
 
-		if (today.getHours > 12) {
+		if (today.getHours() > 12) {
 			hours = today.getHours()-12;
 			isAM = false;
 		} else {
@@ -316,7 +332,7 @@ $(document).ready(function() {
 			minutes = minutes + " PM"
 		};
 
-		readableDate = today.getMonth()+1 + "/" + today.getDate() + "/" + (today.getYear()-100) + ", " + today.getHours() + ":" + minutes;
+		readableDate = today.getMonth()+1 + "/" + today.getDate() + "/" + (today.getYear()-100) + ", " + hours + ":" + minutes;
 
 
 		//update the page text

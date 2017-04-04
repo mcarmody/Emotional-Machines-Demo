@@ -24,23 +24,11 @@
 }
 
 #alertButton {
-	color: white;
-	background-color: black;
-	padding: 6px;
-	border: 1px solid teal;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 16pt;
-	width: 75px;
-
-	&:active {
-		background-color: lighten(black, 30%);
-	};
+	width: 56px;
 }
 
 #editButton {
-	@extend #alertButton;
-	width: 40px;
+	width: 30px;
 }
 
 .detailTable {
@@ -55,24 +43,6 @@
 	background-color: lighten(teal, 10%);
 }
 
-.hideButton {
-	position: absolute;
-	padding-left: 7px;
-	padding-right: 0px;
-	left: -20px;
-	top: 5px;
-	width: 11px;
-	height: 20px;
-	background-color: $primary-logo-color;
-	border-bottom: 1px solid $border-color;
-	border-left: 1px solid $border-color;
-	border-top: 1px solid $border-color;
-	cursor: pointer;
-
-	&:hover {
-		background-color: lighten($primary-logo-color, 10%);
-	}
-}
 
 .alertLink {
 	text-decoration: underline;

@@ -90,18 +90,9 @@
 			<div class="highAlerts alertText"></div>
 			<div class="lowAlerts alertText"></div>
 			<div class="elementDatum"></div>
-			<div class="alertButton" id = "alertButton">Refresh</div>
-			<div class="editButton" id = "editButton">Edit</div>
-		</div>
-		<div class="elementRow">
-			<div class="elementName"></div>
-			<div class="lastUpdate"></div>
-			<div class="highAlerts alertText"></div>
-			<div class="lowAlerts alertText"></div>
-			<div class="elementDatum"></div>
-			<div class="alertButton" id = "alertButton">Refresh</div>
-			<div class="editButton" id = "editButton">Edit</div>
-		</div>		
+			<div class="primaryButton" id = "alertButton">Refresh</div>
+			<div class="primaryButton" id = "editButton">Edit</div>
+		</div>	
 	</div>
 
 	<div class="detailTable hidden">
@@ -126,22 +117,24 @@
 </div>
 
 <div class="editMenu">
-	<div class="editHeader">Machine Alerts</div>
+	<div class="editHeader">Edit Alerts</div>
+	<div class="editSubheader">Alert Details</div>
 	<div class="tempAlertsEdit">
 		<p class="highTempTitle">High Threshold:</p>
-		<input class="highTempInput"></input>
+		<input class="highTempInput inputBox"></input>
 		<p class="lowTempTitle">Low Threshold:</p>
-		<input class="lowTempInput"></input>
-		<div class="updateTempButton">Update</div>
+		<input class="lowTempInput inputBox"></input>
+		<div class="primaryButton" id="updateTempButton">Update</div>
 		<div class="successMessage">Successful!</div>
+		<div class="hideButton"><i class="fa fa-caret-right" aria-hidden="true"></i></div>
 	</div>
-	<div class="hideButton editButton"><i class="fa fa-caret-right" aria-hidden="true"></i></div>
 </div>
 
 <div class="alertsModal">
-	<div class="alertsHeader">Alert Details</div>
+	<div class="alertsHeader"></div>
+	<div class="alertsSubheader">Alert Details</div>
 	<div class="closeModal"><i class="fa fa-times" aria-hidden="true"></i></div>
-	<div class="alertsSubheader"></div>
+	<div class="modalThresholdText"></div>
 	<div class="currentTemp"></div>
 	<div class="alertsDetail"></div>
 </div>

@@ -49,6 +49,27 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 2; }
 
+.primaryButton {
+  color: teal;
+  padding: 6px;
+  border: 1px solid teal;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12pt;
+  text-align: center; }
+  .primaryButton:active {
+    background-color: #4d4d4d; }
+
+.inputBox {
+  border-radius: 3px;
+  box-shadow: none;
+  border: 1px solid #999;
+  padding: 2px;
+  font-size: 10pt;
+  color: black; }
+  .inputBox::placeholder {
+    color: #bbb; }
+
 .columnHeaders {
   display: block; }
   .columnHeaders div {
@@ -66,20 +87,11 @@ body {
     width: 150px;
     font-size: 12pt; }
 
-#alertButton, #editButton {
-  color: white;
-  background-color: black;
-  padding: 6px;
-  border: 1px solid teal;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16pt;
-  width: 75px; }
-  #alertButton:active, #editButton:active {
-    background-color: #4d4d4d; }
+#alertButton {
+  width: 56px; }
 
 #editButton {
-  width: 40px; }
+  width: 30px; }
 
 .detailTable {
   padding: 5px 5px 0px 15px;
@@ -87,22 +99,6 @@ body {
 
 .highlighted {
   background-color: #00b3b3; }
-
-.hideButton {
-  position: absolute;
-  padding-left: 7px;
-  padding-right: 0px;
-  left: -20px;
-  top: 5px;
-  width: 11px;
-  height: 20px;
-  background-color: #00b3b3;
-  border-bottom: 1px solid #222;
-  border-left: 1px solid #222;
-  border-top: 1px solid #222;
-  cursor: pointer; }
-  .hideButton:hover {
-    background-color: #00e6e6; }
 
 .alertLink {
   text-decoration: underline;

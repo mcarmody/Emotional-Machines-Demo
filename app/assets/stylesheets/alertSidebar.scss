@@ -26,6 +26,17 @@
 		margin-right: 10px;
 	}
 
+	.modalThresholdText {
+		display: inline-block;
+		position: relative;
+		font-style: italic;
+		margin-bottom: 10px;
+		width: 200px;
+		margin-right: 10px;
+		height: 45px;
+		color: $primary-font-color;
+	}
+
 	.currentTemp {
 		display: inline-block;
 		font-style: italic;
@@ -37,6 +48,8 @@
 		font-size: 24pt;
 		font-weight: 700;
 		margin-bottom: 15px;
+		width: 50%;
+		float: left;
 	}
 
 	.alertsDetail {
