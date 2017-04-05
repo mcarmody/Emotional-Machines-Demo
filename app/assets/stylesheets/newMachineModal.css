@@ -202,7 +202,7 @@ body {
     .editMenu .hideButton:hover {
       background-color: #00e6e6; }
 
-.alertsModal {
+.alertsModal, .newMachineModal {
   position: absolute;
   margin-left: -250px;
   margin-right: -250px;
@@ -217,14 +217,14 @@ body {
   background-color: white;
   padding: 15px;
   box-shadow: 0 0 10px black; }
-  .alertsModal .alertsSubheader {
+  .alertsModal .alertsSubheader, .newMachineModal .alertsSubheader {
     display: inline-block;
     position: relative;
     font-style: italic;
     margin-bottom: 10px;
     width: 100%;
     margin-right: 10px; }
-  .alertsModal .modalThresholdText {
+  .alertsModal .modalThresholdText, .newMachineModal .modalThresholdText, .alertsModal .newMachineEntry, .newMachineModal .newMachineEntry {
     display: inline-block;
     position: relative;
     font-style: italic;
@@ -232,36 +232,52 @@ body {
     width: 220px;
     margin-right: 10px;
     color: #bbb; }
-  .alertsModal .currentTemp {
+  .alertsModal .currentTemp, .newMachineModal .currentTemp {
     display: inline-block;
     font-style: italic;
     position: relative;
     color: #bbb; }
-  .alertsModal .modalHeader {
+  .alertsModal .modalHeader, .newMachineModal .modalHeader {
     font-size: 24pt;
     font-weight: 700;
     margin-bottom: 0px;
     width: 100%;
     float: left; }
-  .alertsModal .alertsDetail {
+  .alertsModal .alertsDetail, .newMachineModal .alertsDetail {
     overflow: auto;
     position: relative;
     height: 400px;
     border-top: 1px solid #999;
     padding-top: 5px; }
-    .alertsModal .alertsDetail .singleAlertDate {
+    .alertsModal .alertsDetail .singleAlertDate, .newMachineModal .alertsDetail .singleAlertDate {
       font-weight: 600;
       display: inline-block;
       width: 200px;
       margin-bottom: 3px; }
-    .alertsModal .alertsDetail .singleAlertTemp {
+    .alertsModal .alertsDetail .singleAlertTemp, .newMachineModal .alertsDetail .singleAlertTemp {
       display: inline-block;
       width: 200px;
       font-style: italic; }
-  .alertsModal .closeModal {
+  .alertsModal .closeModal, .newMachineModal .closeModal {
     position: absolute;
     top: 5px;
     right: 10px;
     cursor: pointer; }
 
-/*# sourceMappingURL=alertSidebar.css.map */
+.newMachineModal {
+  height: 200px; }
+
+.newMachineEntry {
+  margin-top: 50px;
+  text-align: right;
+  width: 150px !important; }
+
+.uuidEntryField {
+  width: 300px; }
+
+#newMachineSubmit {
+  width: 200px;
+  margin: 0 auto;
+  margin-top: 10px; }
+
+/*# sourceMappingURL=newMachineModal.css.map */

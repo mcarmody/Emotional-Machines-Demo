@@ -23,6 +23,7 @@ $(document).ready(function() {
 	var isAM = true;
 	var readableDate;
 	var selectedElement;
+	var newMachineModalHTML = $('.newMachineModal');
 
 	var highAlert = -77;
 	var lowAlert = -81;
@@ -50,13 +51,6 @@ $(document).ready(function() {
 	//hide the edit menu children, this is a
 	//temporary solution to a toggle visibility issue
 	editMenu.children().toggle();
-
-	$('.elementHeader').click(function() {
-		$(this).toggleClass('highlighted');
-		$(this).find('i').toggleClass('fa-caret-right').toggleClass('fa-caret-down');
-		$(this).siblings('.detailTable').toggleClass('hidden');
-	});
-
 
 	// the high and/or low alert values
 	$('#updateTempButton').click(function() {
@@ -92,9 +86,7 @@ $(document).ready(function() {
 		})
 
 		$(forceRefresh);
-
 	});
-
 
 	//animate the edit menu and update the values there
 	$('#editButton').click(function() {
@@ -106,10 +98,8 @@ $(document).ready(function() {
 		$(openDetailsSidebar);
 	});
 
-
 	// update the alert count, and check latest data readings
 	$('#alertButton').click(updateTable);
-
 
 	//this is for opening the 'Alert Details' panel
 	$('.elementRow').on('click', '.alertLink', function() {
@@ -125,12 +115,23 @@ $(document).ready(function() {
 		$(tempAlertModal(isHighAlert));
 	})
 
+	//close the modal when clicking the X
+	$('.closeModal').click(closeModal);
 
-	$('.closeModal').click( function() {
-		alertsModal.fadeOut();
-		$('.modalOverlay').fadeOut();
-		$(forceRefresh);
+	//add a new machine and close the modal
+	$('#newMachineSubmit').click( function() {
+
+		var newUUID = $(this).siblings('input').val();
+		console.log(newUUID);
+
+		$(addNewMachine(newUUID));
+
+		$(closeModal);
 	})
+
+	$('#addMachineButton').click( function() {
+		$(newMachineModal);
+	});
 
 
 	// -------------------------
@@ -259,11 +260,11 @@ $(document).ready(function() {
 		alertsModal.fadeIn();
 		$('.modalOverlay').fadeIn();
 		alertsModal.find('.alertsDetail').html('');
-		alertsModal.find('.alertsHeader').html('');
+		alertsModal.find('#alertsHeader').html('');
 		alertsModal.find('.currentTemp').html('');
 
 		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-			alertsModal.find('.alertsHeader').html(data.name);
+			alertsModal.find('#alertsHeader').html(data.name);
 		});
 
 		$.getJSON("https://api.elementalmachines.io/api/machines/" + machinesList[0] + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
@@ -346,10 +347,23 @@ $(document).ready(function() {
 		});
 	};
 
+	function newMachineModal() {
+		$('.modalOverlay').fadeIn();
+		newMachineModalHTML.fadeIn();
+	};
+
 	function addNewMachine(machineUUID) {
-		machineUUID = 'test';
-		machinesList.push[machineUUID];
+
+		machinesList.push(machineUUID);
+
+		//just to check we did it right
 		console.log(machinesList);
+	}
+
+	function closeModal() {
+		$('.modal').fadeOut();
+		$('.modalOverlay').fadeOut();
+		$(forceRefresh);
 	}
 });
 
