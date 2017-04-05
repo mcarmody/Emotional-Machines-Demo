@@ -102,13 +102,7 @@ $(document).ready(function() {
 
 	// update the alert count, and check latest data readings
 	$('.detailTable').on('click', '.alertButton', function() {
-
-		var machineNameHTML = $(this).siblings(".elementName");
-		getMachineName(0);
-		machineNameHTML.html(currentMachineName);
 		updateTable(machinesList[0], $(this));
-
-
 	});
 
 	//this is for opening the 'Alert Details' panel
@@ -159,10 +153,16 @@ $(document).ready(function() {
 		var highAlertCounter = 0;
 		var lowAlertCounter = 0;
 
+		console.log(selectedElement);
+
 		var highAlertHTML = selectedElement.siblings(".highAlerts");
 		var lowAlertHTML = selectedElement.siblings(".lowAlerts");
 		var tempHTML = selectedElement.siblings(".elementDatum");
-		
+
+		var machineNameHTML = selectedElement.siblings(".elementName");
+		getMachineName(0);
+		console.log(currentMachineName);
+		machineNameHTML.html(currentMachineName);
 
 		$.getJSON("https://api.elementalmachines.io/api/machines/" + currentMachine + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
 			
@@ -259,9 +259,8 @@ $(document).ready(function() {
 
 		for (var i = 0; i < machinesList.length; i++) {
 
-			console.log(machinesList[i]);
 			$('.detailTable').append(elementRowTemplate.html());
-			$(updateTable(machinesList[i]));
+			$(updateTable(machinesList[i], $('.detailTable > .elementRow:last-child > .alertButton')));
 
 			var temporaryMachines = ($('.elementRow:last-child'));
 
