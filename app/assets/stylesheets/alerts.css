@@ -95,11 +95,11 @@ body {
     width: 150px;
     font-size: 12pt; }
 
-#alertButton {
-  width: 56px; }
+.alertButton {
+  width: 56px !important; }
 
-#editButton {
-  width: 30px; }
+.editButton {
+  width: 30px !important; }
 
 .detailTable {
   padding: 5px 5px 0px 15px;

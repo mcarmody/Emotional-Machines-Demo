@@ -24,7 +24,7 @@ $(document).ready(function() {
 	var readableDate;
 	var selectedElement;
 	var newMachineModalHTML = $('.newMachineModal');
-
+	var elementRowTemplate = $('#elementRowTemplate');
 	var highAlert = -77;
 	var lowAlert = -81;
 	var maxTemp = 0;
@@ -44,9 +44,11 @@ $(document).ready(function() {
 	var machinesList = [
 		'8092d98c-b92f-4343-a8ae-104f90362de8',
 	];
+	var machinesListHTML = [];
 
 	// load up the element data on page load
-	$(forceRefresh);
+	//$(forceRefresh);
+	$(machineCheck);
 
 	//hide the edit menu children, this is a
 	//temporary solution to a toggle-visibility issue
@@ -89,7 +91,7 @@ $(document).ready(function() {
 	});
 
 	//animate the edit menu and update the values there
-	$('#editButton').click(function() {
+	$('.editButton').click(function() {
 		$(openDetailsSidebar);
 	});
 
@@ -99,7 +101,9 @@ $(document).ready(function() {
 	});
 
 	// update the alert count, and check latest data readings
-	$('#alertButton').click(updateTable);
+	$('.elementRow').on('click', '.alertButton', function() {
+		console.log(machinesList);
+	});
 
 	//this is for opening the 'Alert Details' panel
 	$('.elementRow').on('click', '.alertLink', function() {
@@ -143,7 +147,8 @@ $(document).ready(function() {
 
 
 	// the modular function to refresh
-	function updateTable() {
+	function updateTable(currentMachine) {
+		console.log(currentMachine);
 		var highAlertCounter = 0;
 		var lowAlertCounter = 0;
 		selectedElement = $(this);
@@ -154,7 +159,7 @@ $(document).ready(function() {
 		var machineNameHTML = $(this).siblings(".elementName");
 		
 
-		$.getJSON("https://api.elementalmachines.io/api/machines/" + machinesList[0] + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
+		$.getJSON("https://api.elementalmachines.io/api/machines/" + currentMachine + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
 			
 				//check to make sure we can receive and parse the API data at all
 				console.log("Current temperature is " + data[data.length-1].tempextcal + ", logged at: " + data[data.length-1].sample_date);
@@ -212,13 +217,6 @@ $(document).ready(function() {
 			};
 		});
 
-		//update the machine name
-
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-			machineNameHTML.html(data.name);
-		});
-
-
 		// make the date human-readable
 
 		var hours;
@@ -251,8 +249,24 @@ $(document).ready(function() {
 		$(this).siblings(".lastUpdate").html(readableDate);
 	};
 
+	function machineCheck() {
+		var machineCount = $('.elementRow').length-1;
+
+		for (var i = 0; i < machinesList.length; i++) {
+
+			console.log(machinesList[i]);
+			$('.detailTable').append(elementRowTemplate.html());
+			$(updateTable(machinesList[i]));
+
+			var temporaryMachines = ($('.elementRow:last-child'));
+
+			machinesListHTML.push(temporaryMachines[0]);
+		};
+		console.log(machinesListHTML);
+	}
+
 	function forceRefresh() {
-	    $('#alertButton').click(function() {
+	    $('.alertButton').click(function() {
 	        //this just simulates a click, running the update function
 	        //in case this needs to happen without an actual click from the user
 	    }).click();

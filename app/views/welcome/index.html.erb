@@ -84,7 +84,7 @@
 			<div class="elementDatum">Data (°C)</div>
 			<div class="primaryButton" id="addMachineButton">Add Machine  <i class="fa fa-plus" aria-hidden="true"></i></div>
 		</div>
-		<div class="elementRow">
+<!-- 		<div class="elementRow">
 			<div class="elementName"></div>
 			<div class="lastUpdate"></div>
 			<div class="highAlerts alertText"></div>
@@ -92,26 +92,7 @@
 			<div class="elementDatum"></div>
 			<div class="primaryButton" id = "alertButton">Refresh</div>
 			<div class="primaryButton" id = "editButton">Edit</div>
-		</div>	
-	</div>
-
-	<div class="detailTable hidden">
-		<tr class="columnHeaders">
-			<td class="elementName"></td>
-			<td class="lastUpdate"></td>
-			<td class="elementAlerts"></td>
-			<td class="elementGraphs"></td>
-			<td class="elementDatum"></td>
-			<td class="elementDatum"></td>
-		</tr>
-		<tr class="elementRow">
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>		
+		</div> -->	
 	</div>
 
 </div>
@@ -145,4 +126,16 @@
 	<input class="uuidEntryField inputBox" placeholder = "abcdefg-1234-5678-9012-abcdefghijlk"></input>
 	<div class="primaryButton" id="newMachineSubmit">Add This Machine</div>
 	<div class="closeModal"><i class="fa fa-times" aria-hidden="true"></i></div>
+</div>
+
+<div class="hidden" id="elementRowTemplate">
+	<div class="elementRow">
+		<div class="elementName"></div>
+		<div class="lastUpdate"></div>
+		<div class="highAlerts alertText"></div>
+		<div class="lowAlerts alertText"></div>
+		<div class="elementDatum"></div>
+		<div class="primaryButton alertButton">Refresh</div>
+		<div class="primaryButton editButton">Edit</div>
+	</div>
 </div>
