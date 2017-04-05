@@ -72,4 +72,9 @@ body {
   .inputBox::placeholder {
     color: #bbb; }
 
+.divider {
+  width: 100%;
+  margin: 20px 0px 20px 0px;
+  border-bottom: 1px solid #999; }
+
 /*# sourceMappingURL=machines.css.map */

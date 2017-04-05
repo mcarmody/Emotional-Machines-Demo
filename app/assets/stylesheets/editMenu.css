@@ -72,6 +72,11 @@ body {
   .inputBox::placeholder {
     color: #bbb; }
 
+.divider {
+  width: 100%;
+  margin: 20px 0px 20px 0px;
+  border-bottom: 1px solid #999; }
+
 .editMenu {
   padding: 15px;
   position: fixed;
@@ -89,7 +94,7 @@ body {
   .editMenu .tempAlertsEdit p {
     margin-top: 5px;
     margin-bottom: 5px; }
-  .editMenu #updateTempButton {
+  .editMenu #updateSidebarButton {
     width: 75px;
     margin: 0 auto;
     margin-top: 20px; }

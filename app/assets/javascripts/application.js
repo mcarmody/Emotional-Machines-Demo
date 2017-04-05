@@ -53,15 +53,17 @@ $(document).ready(function() {
 	editMenu.children().toggle();
 
 	// the high and/or low alert values
-	$('#updateTempButton').click(function() {
-		if ($(this).siblings('.highTempInput').val()) {
-			var newHighTempThreshold = $(this).siblings('.highTempInput').val();
-			highAlert = newHighTempThreshold;
+	$('#updateSidebarButton').click(function() {
+
+		var highInput = $(this).siblings('.tempAlertsEdit').find('.highTempInput').val();
+		var lowInput = $(this).siblings('.tempAlertsEdit').find('.lowTempInput').val()
+
+		if (highInput) {
+			highAlert = highInput;
 		};
 
-		if ($(this).siblings('.lowTempInput').val()) {
-			var newLowTempThreshold = $(this).siblings('.lowTempInput').val();
-			lowAlert = newLowTempThreshold;
+		if (lowInput) {
+			lowAlert = lowInput;
 		};
 
 		console.log(highAlert + " " + lowAlert);
@@ -119,6 +121,8 @@ $(document).ready(function() {
 	$('.closeModal').click(closeModal);
 
 	//add a new machine and close the modal
+	//this doesn't do anything real yet, just adds the UUID
+	//to an array of machines
 	$('#newMachineSubmit').click( function() {
 
 		var newUUID = $(this).siblings('input').val();
@@ -142,7 +146,7 @@ $(document).ready(function() {
 	// -------------------------
 
 
-	// the modular function to refresh
+	// the function to refresh
 	function updateTable() {
 		var highAlertCounter = 0;
 		var lowAlertCounter = 0;
@@ -258,7 +262,7 @@ $(document).ready(function() {
 	    }).click();
 	};
 
-	//this is the modular function to render and dynamically fill the details modal
+	// this is the function to render and dynamically fill the details modal
 	function tempAlertModal(isHighAlert) {
 		alertsModal.fadeIn();
 		$('.modalOverlay').fadeIn();
@@ -344,6 +348,9 @@ $(document).ready(function() {
 
 		$('.highTempInput').attr('placeholder', highAlert);
 		$('.lowTempInput').attr('placeholder', lowAlert);
+
+		$('.highTempInput').val('');
+		$('.lowTempInput').val('');
 
 		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
 			editMenu.find('.editHeader').html(data.name);
