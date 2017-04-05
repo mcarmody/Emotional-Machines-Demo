@@ -48,7 +48,7 @@ $(document).ready(function() {
 
 	// load up the element data on page load
 	//$(forceRefresh);
-	$(machineCheck);
+	;
 
 	//hide the edit menu children, this is a
 	//temporary solution to a toggle-visibility issue
@@ -137,6 +137,8 @@ $(document).ready(function() {
 		$(addNewMachine(newUUID));
 
 		$(closeModal);
+
+		$(machineCheck);
 
 		//clear the value of the field for next time
 		$(this).siblings('input').val('');
@@ -392,5 +394,7 @@ $(document).ready(function() {
 		$('.modalOverlay').fadeOut();
 		$(forceRefresh);
 	}
+
+	$(machineCheck);
 });
 
