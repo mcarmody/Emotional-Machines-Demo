@@ -59,6 +59,8 @@ body {
   text-align: center; }
   .primaryButton:active {
     background-color: #4d4d4d; }
+  .primaryButton:hover {
+    color: rgba(0, 128, 128, 0.5); }
 
 .inputBox {
   border-radius: 3px;

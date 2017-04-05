@@ -78,6 +78,10 @@ body {
 	&:active {
 		background-color: lighten(black, 30%);
 	};
+
+	&:hover {
+		color: transparentize($button-color, .5);
+	};
 }
 
 .inputBox {

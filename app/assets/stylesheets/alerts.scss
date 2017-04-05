@@ -3,6 +3,11 @@
 .columnHeaders {
 	display: block;
 	font-weight: 700;
+	height: 35px;
+	margin-left: -55px;
+	padding-left: 55px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid $border-color;
 
 	div {
 		display: inline-block;
@@ -49,4 +54,11 @@
 	text-decoration: underline;
 	color: $link-color;
 	cursor: pointer;
+}
+
+#addMachineButton {
+	@extend .primaryButton;
+	width: inherit;
+	padding: 2px 5px;
+	font-weight: 300;
 }

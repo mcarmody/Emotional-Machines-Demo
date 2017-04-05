@@ -18,15 +18,6 @@
 
 $(document).ready(function() {
 
-	// load up the element data on page load
-	$(forceRefresh);
-
-	$('.elementHeader').click(function() {
-		$(this).toggleClass('highlighted');
-		$(this).find('i').toggleClass('fa-caret-right').toggleClass('fa-caret-down');
-		$(this).siblings('.detailTable').toggleClass('hidden');
-	});
-
 	var lastFiveHours = [];
 	var today = new Date;
 	var isAM = true;
@@ -53,17 +44,39 @@ $(document).ready(function() {
 		'8092d98c-b92f-4343-a8ae-104f90362de8',
 	];
 
+	// load up the element data on page load
+	$(forceRefresh);
+
+	//hide the edit menu children, this is a
+	//temporary solution to a toggle visibility issue
+	editMenu.children().toggle();
+
+	$('.elementHeader').click(function() {
+		$(this).toggleClass('highlighted');
+		$(this).find('i').toggleClass('fa-caret-right').toggleClass('fa-caret-down');
+		$(this).siblings('.detailTable').toggleClass('hidden');
+	});
+
+
 	// the high and/or low alert values
 	$('#updateTempButton').click(function() {
-		var newHighTempThreshold = $(this).siblings('.highTempInput').val();
-		var newLowTempThreshold = $(this).siblings('.lowTempInput').val();
+		if ($(this).siblings('.highTempInput').val()) {
+			var newHighTempThreshold = $(this).siblings('.highTempInput').val();
+			highAlert = newHighTempThreshold;
+		};
 
-		console.log(newHighTempThreshold + " " + newLowTempThreshold);
+		if ($(this).siblings('.lowTempInput').val()) {
+			var newLowTempThreshold = $(this).siblings('.lowTempInput').val();
+			lowAlert = newLowTempThreshold;
+		};
+
+		console.log(highAlert + " " + lowAlert);
+
 		$(this).siblings('.successMessage').animate({'opacity':'1'}).delay(500);
 		$(this).siblings('.successMessage').animate({'opacity':'0'});
+		setTimeout(openDetailsSidebar, 1000);
 
-		highAlert = newHighTempThreshold;
-		lowAlert = newLowTempThreshold;
+		
 
 		// this is kicking back a 404
 		// $.ajax({
@@ -85,25 +98,12 @@ $(document).ready(function() {
 
 	//animate the edit menu and update the values there
 	$('#editButton').click(function() {
-		editMenu.animate({width:'toggle'},300);
-
-		$('.highTempInput').attr('placeholder', highAlert);
-		$('.lowTempInput').attr('placeholder', lowAlert);
-
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-			editMenu.find('.editHeader').html(data.name);
-		});
+		$(openDetailsSidebar);
 	});
 
+	//the same toggle as above, but for the close caret
 	$('.hideButton').click(function() {
-		editMenu.animate({width:'toggle'},300);
-
-		$('.highTempInput').attr('placeholder', highAlert);
-		$('.lowTempInput').attr('placeholder', lowAlert);
-
-		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-			editMenu.find('.editHeader').html(data.name);
-		});
+		$(openDetailsSidebar);
 	});
 
 
@@ -112,69 +112,17 @@ $(document).ready(function() {
 
 
 	//this is for opening the 'Alert Details' panel
-	// $('.elementRow').on('click', '.alertLink', function() {
-	// 	alertsModal.fadeIn();
-	// 	$('.modalOverlay').fadeIn();
-	// 	alertsModal.find('.alertsDetail').html('');
-	// 	alertsModal.find('.alertsHeader').html('');
-	// 	alertsModal.find('.currentTemp').html('');
-
-	// 	$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
-	// 		alertsModal.find('.alertsHeader').html(data.name);
-	// 	});
-
-	// 	$.getJSON("https://api.elementalmachines.io/api/machines/" + machinesList[0] + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
-			
-	// 		//check to make sure we can receive and parse the API data at all
-	// 		temp = data[data.length-1].tempextcal;
-	// 		$('.currentTemp').html('Current Temperature: ' + temp + '°C');
-	// 		console.log('working');
-
-	// 		var i;
-	// 		var loopDate;
-
-	// 		for (i = 0; i < data.length; i++) {
-	// 			loopTemp = data[i].tempextcal;
-	// 			loopDate = new Date(data[i].sample_epoch*1000);
-
-	// 			if (loopDate.getHours() > 12) {
-	// 				hours = loopDate.getHours()-12;
-	// 				isAM = false;
-	// 			} else {
-	// 				hours = loopDate.getHours();
-	// 			};
-				
-	// 			var minutes;
-
-	// 			if (loopDate.getMinutes() < 10) {
-	// 				minutes = "0" + loopDate.getMinutes()
-	// 			} else {
-	// 				minutes = loopDate.getMinutes();
-	// 			};
-
-	// 			if (isAM) {
-	// 				minutes = minutes + " AM"
-	// 			} else {
-	// 				minutes = minutes + " PM"
-	// 			};
-
-	// 			readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + hours + ":" + minutes;
-
-
-	// 			// high temp alert check
-	// 			if (Math.abs(loopTemp) < Math.abs(highAlert)) {
-	// 				alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + '</div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
-	// 				//console.log(temp);
-	// 			};
-	// 		};
-	// 	})
-	// 	alertsModal.find('.modalThresholdText').html('High Temp Threshold: ' + lowAlert + '°C');
-	// })
-
-	//this is for opening the 'Alert Details' panel
 	$('.elementRow').on('click', '.alertLink', function() {
-		$(tempAlertModal);
-		alertsModal.find('.modalThresholdText').html('Low Temp Threshold: ' + lowAlert + '°C');
+
+		//the modal function needs to know if 
+		//we're opening a high or low alert modal
+		var isHighAlert;
+		if ($(this).hasClass('highAlerts')) {
+			isHighAlert = true;
+		}
+
+		//run the modal render function
+		$(tempAlertModal(isHighAlert));
 	})
 
 
@@ -183,6 +131,12 @@ $(document).ready(function() {
 		$('.modalOverlay').fadeOut();
 		$(forceRefresh);
 	})
+
+
+	// -------------------------
+	//BEGIN FUNCTION DEFINITIONS
+	// -------------------------
+
 
 	// the modular function to refresh
 	function updateTable() {
@@ -296,10 +250,12 @@ $(document).ready(function() {
 	function forceRefresh() {
 	    $('#alertButton').click(function() {
 	        //this just simulates a click, running the update function
+	        //in case this needs to happen without an actual click from the user
 	    }).click();
 	};
 
-	function tempAlertModal() {
+	//this is the modular function to render and dynamically fill the details modal
+	function tempAlertModal(isHighAlert) {
 		alertsModal.fadeIn();
 		$('.modalOverlay').fadeIn();
 		alertsModal.find('.alertsDetail').html('');
@@ -347,13 +303,53 @@ $(document).ready(function() {
 				readableDate = loopDate.getMonth()+1 + "/" + loopDate.getDate() + "/" + (loopDate.getYear()-100) + ", " + hours + ":" + minutes;
 
 
-				// low temp alert check
-				if (Math.abs(loopTemp) > Math.abs(lowAlert)) {
-					alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + '</div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
-					//console.log(temp);
+				// conditional to check if we're doing a high or low alert modal
+				if (isHighAlert) {
+
+					//if the gathered temp is higher (absolute value because jquery sucks at negative numbers)
+					//than the alert threshold, we add a div with the details to the details modal's table
+					if (Math.abs(loopTemp) < Math.abs(highAlert)) {
+						alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + '</div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
+						//console.log(temp);
+					};
+				} else {
+
+					//if the gathered temp is lower (absolute value because jquery sucks at negative numbers)
+					//than the alert threshold, we add a div with the details to the details modal's table
+					if (Math.abs(loopTemp) > Math.abs(lowAlert)) {
+						alertsModal.find('.alertsDetail').append('<div class="singleAlertDate">' + readableDate + '</div><div class="singleAlertTemp">' + loopTemp + ' °C </div>');
+						//console.log(temp);
+					};
 				};
 			};
+
+			//run the same conditional to check for high or low alert,
+			//except this time outside of the for-loop
+			if (isHighAlert) {
+				alertsModal.find('.modalThresholdText').html('High Temp Threshold: ' + highAlert + '°C');
+			} else {
+				alertsModal.find('.modalThresholdText').html('Low Temp Threshold: ' + lowAlert + '°C');
+			}
+
 		});
 	};
+
+	function openDetailsSidebar() {
+		editMenu.animate({width:'toggle'},300);
+		editMenu.children().toggle();
+
+		$('.highTempInput').attr('placeholder', highAlert);
+		$('.lowTempInput').attr('placeholder', lowAlert);
+
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[0] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+			editMenu.find('.editHeader').html(data.name);
+		});
+	};
+
+	function addNewMachine(machineUUID) {
+		machineUUID = 'test';
+		machinesList.push[machineUUID];
+		console.log(machinesList);
+	}
 });
 
