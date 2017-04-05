@@ -22,7 +22,6 @@ $(document).ready(function() {
 	var today = new Date;
 	var isAM = true;
 	var readableDate;
-	var selectedElement;
 	var newMachineModalHTML = $('.newMachineModal');
 	var elementRowTemplate = $('#elementRowTemplate');
 	var highAlert = -77;
@@ -33,6 +32,7 @@ $(document).ready(function() {
 	var date;
 	var highAlertCounter = 0;
 	var lowAlertCounter = 0;
+	var currentMachineName;
 
 	var alertsModal = $('.alertsModal');
 	var editMenu = $('.editMenu');
@@ -91,7 +91,7 @@ $(document).ready(function() {
 	});
 
 	//animate the edit menu and update the values there
-	$('.editButton').click(function() {
+	$('.detailTable').on('click', '.editButton', function() {
 		$(openDetailsSidebar);
 	});
 
@@ -101,12 +101,18 @@ $(document).ready(function() {
 	});
 
 	// update the alert count, and check latest data readings
-	$('.elementRow').on('click', '.alertButton', function() {
-		console.log(machinesList);
+	$('.detailTable').on('click', '.alertButton', function() {
+
+		var machineNameHTML = $(this).siblings(".elementName");
+		getMachineName(0);
+		machineNameHTML.html(currentMachineName);
+		updateTable(machinesList[0], $(this));
+
+
 	});
 
 	//this is for opening the 'Alert Details' panel
-	$('.elementRow').on('click', '.alertLink', function() {
+	$('.detailTable').on('click', '.alertLink', function() {
 
 		//the modal function needs to know if 
 		//we're opening a high or low alert modal
@@ -147,16 +153,13 @@ $(document).ready(function() {
 
 
 	// the modular function to refresh
-	function updateTable(currentMachine) {
-		console.log(currentMachine);
+	function updateTable(currentMachine, selectedElement) {
 		var highAlertCounter = 0;
 		var lowAlertCounter = 0;
-		selectedElement = $(this);
 
-		var highAlertHTML = $(this).siblings(".highAlerts");
-		var lowAlertHTML = $(this).siblings(".lowAlerts");
-		var tempHTML = $(this).siblings(".elementDatum");
-		var machineNameHTML = $(this).siblings(".elementName");
+		var highAlertHTML = selectedElement.siblings(".highAlerts");
+		var lowAlertHTML = selectedElement.siblings(".lowAlerts");
+		var tempHTML = selectedElement.siblings(".elementDatum");
 		
 
 		$.getJSON("https://api.elementalmachines.io/api/machines/" + currentMachine + "/samples.json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033&from="+fiveHoursAgo+"&limit="+limit, function(data) {
@@ -164,7 +167,7 @@ $(document).ready(function() {
 				//check to make sure we can receive and parse the API data at all
 				console.log("Current temperature is " + data[data.length-1].tempextcal + ", logged at: " + data[data.length-1].sample_date);
 				temp = data[data.length-1].tempextcal;
-				console.log(temp);
+				var machineName = data[data.length-1].name;
 
 				var i;
 
@@ -194,10 +197,10 @@ $(document).ready(function() {
 				console.log("There have been " + highAlertCounter + " high-temp alerts and " + lowAlertCounter + " low alerts in the past " + limit / 240 + " hours.");
 		}).done( function() {
 
-			//update the page text
-			highAlertHTML.html(highAlertCounter);
-			lowAlertHTML.html(lowAlertCounter);
-			tempHTML.html(temp);
+		//update the page text
+		highAlertHTML.html(highAlertCounter);
+		lowAlertHTML.html(lowAlertCounter);
+		tempHTML.html(temp);
 
 		}).done( function() {
 
@@ -246,7 +249,7 @@ $(document).ready(function() {
 
 
 		//update the page text
-		$(this).siblings(".lastUpdate").html(readableDate);
+		selectedElement.siblings(".lastUpdate").html(readableDate);
 	};
 
 	function machineCheck() {
@@ -351,6 +354,13 @@ $(document).ready(function() {
 
 		});
 	};
+
+	function getMachineName(index) {	
+
+		$.getJSON("https://api.elementalmachines.io:443/api/machines/" + machinesList[index] + ".json?access_token=7eb3d0a32f2ba1e8039657ef2bd1913d95707ff53e37dfd0344ac62ded3df033", function(data) {
+			currentMachineName = data.name;
+		});
+	}
 
 	function openDetailsSidebar() {
 		editMenu.animate({width:'toggle'},300);
