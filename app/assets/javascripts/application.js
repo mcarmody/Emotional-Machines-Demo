@@ -49,7 +49,7 @@ $(document).ready(function() {
 	$(forceRefresh);
 
 	//hide the edit menu children, this is a
-	//temporary solution to a toggle visibility issue
+	//temporary solution to a toggle-visibility issue
 	editMenu.children().toggle();
 
 	// the high and/or low alert values
@@ -127,7 +127,10 @@ $(document).ready(function() {
 		$(addNewMachine(newUUID));
 
 		$(closeModal);
-	})
+
+		//clear the value of the field for next time
+		$(this).siblings('input').val('');
+	});
 
 	$('#addMachineButton').click( function() {
 		$(newMachineModal);
