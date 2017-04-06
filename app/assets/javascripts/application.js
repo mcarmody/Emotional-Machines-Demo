@@ -52,6 +52,9 @@ $(document).ready(function() {
 	//temporary solution to a toggle-visibility issue
 	editMenu.children().toggle();
 
+	//run the refresh on every machine row every 2 minutes (default)
+	setInterval(forceRefresh, 120000);
+
 	// the high and/or low alert values
 	$('#updateSidebarButton').click(function() {
 
